@@ -1,0 +1,2 @@
+1,进入sgl窗口时设置tabstop,shiftwidth,还有syntax.
+2,不能直接返回cache，要返回copy.
