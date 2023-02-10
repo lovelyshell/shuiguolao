@@ -132,7 +132,7 @@ _Below is an example of how you can instruct your audience on installing and set
 
 1. Download and unzip this package to WHERE you like.(or git clone)
 
-2.  
+2. Run command: 
    ```sh
    sudo chmod 777 WHERE/shuiguolao/py/shuiguolao.py
    sudo ln -s WHERE/shuiguolao/py/shuiguolao.py /usr/bin/shuiguolao
