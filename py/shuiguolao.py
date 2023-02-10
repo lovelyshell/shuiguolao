@@ -16,7 +16,7 @@ def check_python_version(min_v):
         #print(v)
         if v < min_v:
             print('require python version', min_v, 'current', v)
-            print("let 'python3' on your machine point to a higher version binary, or directly modify the first line of 'shuiguolao.py'.")
+            print("let 'python3' on your machine point to a higher version binary, or directly modify the first line of 'INSTALL_PATH/py/shuiguolao.py'.")
             sys.exit(-1)
     except Exception as e:
         print(e)
