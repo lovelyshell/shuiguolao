@@ -22,7 +22,7 @@ To get a local copy up and running follow these simple example steps.
 Download and unzip(or git clone) this repo to `WHERE` you like, then run command:
    ```sh
    sudo chmod 777 WHERE/shuiguolao/shuiguolao
-   sudo ln -s WHERE/shuiguolao/shuiguolao /usr/bin/shuiguolao
+   sudo ln -s WHERE/shuiguolao/shuiguolao.bash /usr/bin/shuiguolao
    ```
 
 shuiguolao need 

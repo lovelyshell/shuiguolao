@@ -1,3 +1,4 @@
+VIM vim
 一个充满bug的语言
 
 1,if str
@@ -9,3 +10,9 @@
 2, 打印的消息不好找，别用echo。用echomsg和echoerr,然后用message命令查看历史消息。
 
 3,spit函数字符串有.号时，要转义，用'\.'
+
+
+
+TODO
+1,进入sgl窗口时设置tabstop,shiftwidth,还有syntax.
+2,不能直接返回cache，要返回copy.
