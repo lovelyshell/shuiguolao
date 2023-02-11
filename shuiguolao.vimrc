@@ -25,9 +25,9 @@ function GetStrSuffix(s)
 endfunction
 
 function SglName2VT(name)
-	if a:name == 'jshuiguolao' || a:name == 'jsh'
+	if a:name == 'jshuiguolao' || a:name == 'jsh' || a:name == 'shuiguolao-js'
 		return 'js'
-	elseif a:name == 'pshuiguolao' || a:name == 'psh'
+	elseif a:name == 'pshuiguolao' || a:name == 'psh' || a:name == 'shuiguolao-python' || a:name == 'shuiguolao-py'
 		return 'ps'
 	else 
 		return ''
@@ -63,9 +63,9 @@ function TryInitSglTab()
 	endif
 
 	let fname = expand('%')
-	if fname == 'jshuiguolao'
+	if fname == 'jshuiguolao' || fname == 'jsh' || fname == 'shuiguolao-js'
 		let vt = 'js'
-	elseif fname == 'pshuiguolao'
+	elseif fname == 'pshuiguolao' || fname == 'psh'||fname == 'shuiguolao-python' || fname == 'shuiguolao-python'
 		let vt = 'py'
 	else
 		return
@@ -114,7 +114,8 @@ endfunction
 
 
 function NewFilePath()
-	let tstamp = localtime()
+	"let tstamp = localtime()
+	let tstamp = strftime("%m-%d %H:%M:%S")
 	let fname = tstamp.'.'.t:sgl_vm_type
 	let fpath = t:sgl_dir_path.'/history/'.fname
 	return fpath
@@ -158,7 +159,7 @@ function InitEditScr()
 	"map <C-S> :call RunMainWin()
 	call HardMap('<C-S>r', ':call RunMainWin(0,1)', '<buffer>')
 	"call HardMap('<C-S>R', ':call RunMainWin(1,1)', '<buffer>')
-	call HardMap('<C-S>R', ':call RunMainWin_pre()'.':!'.t:sgl_vm_bin.' % ', '<buffer>')
+	call HardMap('<C-S>R', ':call RunMainWin_pre()'.':!'.t:sgl_vm_bin.' "%" ', '<buffer>')
 	map <buffer> <C-N> :call UpDown(1)<cr>
 	map <buffer> <C-P> :call UpDown(-1)<cr>
 	map <buffer> <C-S>N :call NewTalk()
@@ -194,6 +195,7 @@ function TryInitEditScr()
 		return
 	endif
 	call InitEditScr()
+	"call OpenHistory()
 endfunction
 
 
@@ -289,9 +291,9 @@ function RunMainWin_cmd(sudo, _expand)
 		let sudo_s = ''
 	endif
 	if a:_expand
-		let name_s = expand('%')
+		let name_s = '"' . expand('%') .'"'
 	else
-		let name_s = '%'
+		let name_s = '"%"'
 	endif
 	let cmd =  '!'.sudo_s.' '.t:sgl_vm_bin.' '.name_s
 	return cmd

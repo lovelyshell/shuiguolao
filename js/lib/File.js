@@ -151,8 +151,10 @@ class File{
 			}
 			try{
 					for(let f of d.files){
-						fn(f, {depth:cur_depth})
-						if(f.is_dir() && cur_depth != max_depth){
+						let ret = fn(f, {depth:cur_depth})
+						//undefined in js, None in python
+						//console.log(ret)
+						if(ret !== false && f.is_dir() && cur_depth != max_depth){
 								File._R(f, fn, cur_depth+1, max_depth, errlvl)
 						}
 					}

@@ -53,11 +53,15 @@ print(re_vi_mess.regex)
 m = re_vi_mess.exec('.xx.txt.swp')
 print(m)
 
-re_history= ReT.LINE_BEGIN + ReT2.INT +  (CSeq('.py')|'.js') + ReT.LINE_END
+#re_history= ReT.LINE_BEGIN + ReT2.INT +  (CSeq('.py')|'.js') + ReT.LINE_END
+re_history= ReT.LINE_BEGIN + (CEnum('-: .' )|ReT.DIGIT).least(1) +  (CSeq('.py')|'.js') + ReT.LINE_END
 def clear_one(f, rinfo):
     rm = False
     go_on = True
     #清除python缓存
+    if f.name == '.git':
+        print('skip .git')
+        return False
     if f.name == '__pycache__':
         rm = True
         go_on = False
