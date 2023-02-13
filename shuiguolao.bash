@@ -1,15 +1,77 @@
 #!/usr/bin/bash
 
-if [[ $1 == '--python' ]] || [[ $1 == '' ]]
-then
-	VM='py'
-elif [[ $1 == '--js' ]]
-then
-	VM='js'	
-else
-	echo 'unspecified scripty type: '$1
-	exit -1
-fi
+#shuiguolao [--python] [--js] (参数全空时，才启用--python)
+#shuiguolao -i
+#shuiguolao file
+
+#PARAMS_ALL=$@
+#PARAMS_ALL+=' --python'
+#主要解决传递参数含空格的问题，太恶心了
+#the last -- merge prior, so first as default option 
+PARAMS_ALL=('--python')
+i=1
+for arg in "$@"
+do
+	echo $arg
+	PARAMS_ALL[$i]=$arg
+	i=$i+1
+done
+
+#echo '>>>'${PARAMS_ALL[0]} ${PARAMS_ALL[1]}
+function param_exists(){
+	for arg in "${PARAMS_ALL[@]}"
+	do
+		if [[ $arg == $1 ]]
+		then
+			echo 1
+		fi
+	done
+}
+
+
+#we regard everything not starting with '-' as a script
+#发现script参数，后面的参数直接全部传递给后面
+child_args=()
+for arg in "${PARAMS_ALL[@]}"
+do
+	if [[ $SCRIPT_PATH ]]
+	then
+		child_args+=($arg)
+		#echo ">> ${child_args[@]}"
+		
+	elif [[ ${arg:0:1} != '-' ]]
+	then
+		SCRIPT_PATH=$arg
+		SCRIPT_SUFFIX=${arg##*.}
+		#echo $SCRIPT_PATH, $SCRIPT_SUFFIX
+		# when no suffix stay same, so have the second condition,
+		if [[ $SCRIPT_SUFFIX == '' ]] || [[ $SCRIPT_SUFFIX == $arg ]]
+		then
+			echo 'is  '$SCRIPT_PATH' a script path? quit..'
+			exit -1
+		fi
+	fi
+done
+
+
+#if [[ $SCRIPT_PATH ]] && [[ -z $SCRIPT_SUFFIX ]]
+#fi
+for arg in "${PARAMS_ALL[@]}"
+do
+	if [[ $arg == '--python' ]]
+	then
+		VM='py'
+		REPL_S='python3 -i '
+	elif [[ $arg == '--js' ]]
+	then
+		VM='js'	
+		REPL_S='nodejs -r '
+	elif [[ ${arg:0:2} == '--' ]]
+	then
+		echo 'unspecified scripty type: '$1
+		exit -1
+	fi
+done
 
 SGL_BIN=$(realpath $0)
 SGL_DIR=$(dirname $SGL_BIN)
@@ -17,6 +79,23 @@ SGL_VM=$SGL_DIR/$VM
 SGL_HISTORY=$SGL_VM'/history'
 SGL_VIMRC_PATH=$SGL_DIR/shuiguolao.vimrc
 #echo $SGL_VIMRC_PATH
+
+REPL_CMD=$REPL_S$SGL_VM/terminal.$VM
+
+RUN_SCRIPT=''
+if [[ $SCRIPT_PATH != '' ]]
+then
+	if [[ $SCRIPT_SUFFIX == 'py' ]]
+	then
+		RUN_SCRIPT='python3 '$SGL_DIR/py/shuiguolao.py
+	elif [[ $SCRIPT_SUFFIX == 'js' ]]
+	then
+		RUN_SCRIPT='nodejs -r '$SGL_DIR/js/terminal.js
+	else 
+		echo 'unknown script type, quit..'
+		exit -1
+	fi
+fi
 
 
 #make file name
@@ -27,8 +106,26 @@ st=${st:2:-1}
 #INPUT_FILE_PATH=$SGL_HISTORY/$INPUT_FILE_NAME
 
 
+if [[ $RUN_SCRIPT ]]
+then
+	#echo $RUN_SCRIPT
+	#echo $SCRIPT_PATH
+	$RUN_SCRIPT "$SCRIPT_PATH" "${child_args[@]}"
+elif [[ $(param_exists -i) ]]
+then
+	$REPL_CMD
+else 
+	vim -S "$SGL_VIMRC_PATH" "shuiguolao-$VM"
+fi
 
-vim -S "$SGL_VIMRC_PATH" "shuiguolao-$VM"
+
+
+
+
+
+
+
+
 
 
 

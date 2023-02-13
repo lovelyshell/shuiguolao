@@ -1,11 +1,5 @@
-#!/usr/bin/nodejs
-const Path = require('path')
-const {File,OverWriteError} = require('../lib/File.js')
-const strftime = require('../strftime.js')
-const fs = require('fs')
+#!/usr/bin/shuiguolao
 
-let cwd = new File('.')
-sgl_run_timestamp_s = strftime.strftime('%H:%M:%S', new Date().getTime())
 console.log(`****************run ${sgl_run_timestamp_s}************`)
 /***************shuiguolao version 0.1*********************
 *shortcut:                                                *

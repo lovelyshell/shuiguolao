@@ -9,8 +9,8 @@ from functools import cmp_to_key
 exec_py_p = Path(__file__)
 exec_dir_p = exec_py_p.parent.resolve()
 exec_parent_p = exec_dir_p.parent
-lab_file_p = exec_parent_p.joinpath('File')
-lab_re_p = exec_parent_p.joinpath('Re')
+lab_file_p = exec_parent_p.joinpath('lib/File')
+lab_re_p = exec_parent_p.joinpath('lib/Re')
 sys.path.append(lab_file_p.as_posix())
 sys.path.append(lab_re_p.as_posix())
 
@@ -70,16 +70,17 @@ def do_rename():
 def do_delete():
     trash_path = os.path.expanduser('~/.garbage')
     #subprocess.Popen(['mkdir', garbage_dir], shell=True)
-    run_command(['mkdir', trash_path])
-    u = ReT.UINT
-    print(u.s)
-    reg = Re('文件(') + ReT.UINT + ').txt'
-    print(reg.s)
+    #run_command(['mkdir', trash_path])
+    u = ReT2.INT
+    #print(u.s)
+    reg = Re('文件(') + ReT2.INT + ').txt'
+    #print(reg.s)
     for f in cwd.files:
         m = reg.exec(f.name)
         if m:
             print('delete file', f.name)
-            run_command(['mv', f.name, trash_path])
+            Trash.add(f.name)
+            #run_command(['mv', f.name, trash_path])
             
 
 

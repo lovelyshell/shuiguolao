@@ -24,10 +24,19 @@ function GetStrSuffix(s)
 	endif
 endfunction
 
+function OpenTerminal()
+	if t:sgl_vm_type == 'py'
+		let execute_s = 'python3 -i ' . t:sgl_dir_path.'/terminal.py'
+	elseif t:sgl_vm_type == 'js'
+		let execute_s = 'nodejs -r ' . t:sgl_dir_path . "/terminal.js"
+	endif
+	execute 'terminal '. execute_s
+endfunction
+
 function SglName2VT(name)
-	if a:name == 'jshuiguolao' || a:name == 'jsh' || a:name == 'shuiguolao-js'
+	if a:name == 'jshuiguolao' || a:name == 'jsh' || a:name == 'shuiguolao-js' || a:name == 'js-shuiguolao'
 		return 'js'
-	elseif a:name == 'pshuiguolao' || a:name == 'psh' || a:name == 'shuiguolao-python' || a:name == 'shuiguolao-py'
+	elseif a:name == 'pshuiguolao' || a:name == 'psh' || a:name == 'shuiguolao-python' || a:name == 'shuiguolao-py' || a:name == 'py-shuiguolao'
 		return 'ps'
 	else 
 		return ''
@@ -65,7 +74,7 @@ function TryInitSglTab()
 	let fname = expand('%')
 	if fname == 'jshuiguolao' || fname == 'jsh' || fname == 'shuiguolao-js'
 		let vt = 'js'
-	elseif fname == 'pshuiguolao' || fname == 'psh'||fname == 'shuiguolao-python' || fname == 'shuiguolao-python'
+	elseif fname == 'pshuiguolao' || fname == 'psh'||fname == 'shuiguolao-py' || fname == 'shuiguolao-python'
 		let vt = 'py'
 	else
 		return
@@ -156,10 +165,10 @@ function InitEditScr()
 	endif
 
 
-	"map <C-S> :call RunMainWin()
+	"call HardMap('<C-S>r', ':call RunMainWin(0,1)', '<buffer>')
 	call HardMap('<C-S>r', ':call RunMainWin(0,1)', '<buffer>')
-	"call HardMap('<C-S>R', ':call RunMainWin(1,1)', '<buffer>')
-	call HardMap('<C-S>R', ':call RunMainWin_pre()'.':!'.t:sgl_vm_bin.' "%" ', '<buffer>')
+	"call HardMap('<C-S>R', ':call RunMainWin_pre()'.':!'.t:sgl_vm_bin.' "%" ', '<buffer>')
+	call HardMap('<C-S>R', ':call RunMainWin_pre()'.':!shuiguolao "%" ', '<buffer>')
 	map <buffer> <C-N> :call UpDown(1)<cr>
 	map <buffer> <C-P> :call UpDown(-1)<cr>
 	map <buffer> <C-S>N :call NewTalk()
@@ -238,7 +247,7 @@ function HistoryWalk(updown)
 	let netrw_win_nr = Win_ft2nr('netrw')
 	let t:netrw_win_id = win_getid(netrw_win_nr)
 	call win_gotoid(t:netrw_win_id)
-	normal gg
+	normal ggj
 	execute 'call search("'.fname.'")'
 	if a:updown < 0
 		let exe_s = 'normal k'
@@ -298,9 +307,24 @@ function RunMainWin_cmd(sudo, _expand)
 	let cmd =  '!'.sudo_s.' '.t:sgl_vm_bin.' '.name_s
 	return cmd
 endfunction
+"newer function, for newer shebang #!shuiguolao
+function RunMainWin_cmd2(sudo, _expand)
+	if a:sudo
+		let sudo_s = 'sudo'
+	else
+		let sudo_s = ''
+	endif
+	if a:_expand
+		let name_s = '"' . expand('%') .'"'
+	else
+		let name_s = '"%"'
+	endif
+	let cmd =  '!'.sudo_s.' shuiguolao '.name_s
+	return cmd
+endfunction
 function RunMainWin(sudo, _expand)
 	call RunMainWin_pre()
-	let cmd_s = RunMainWin_cmd(a:sudo ,a:_expand)
+	let cmd_s = RunMainWin_cmd2(a:sudo ,a:_expand)
 	execute cmd_s	
 endfunction
 

@@ -1,6 +1,5 @@
-#!/usr/bin/shuiguolao
+#!/usr/bin/shuguolao
 
-print(f'****************run {sgl_run_timestamp_s}************')
 ################shuiguolao version 0.1#####################
 #shortcut:                                                #
 #<C-N>    browse history, down                            #
@@ -12,10 +11,4 @@ print(f'****************run {sgl_run_timestamp_s}************')
 ###########DO NOT EDIT LINES ABOVE!!#######################
 ###########WRITE YOUR CODE BELOW###########################
 
-
-
-
-
-
-
-
+print('****************run' + s_shuiguolao_run_timestamp + '************')
