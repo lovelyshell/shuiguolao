@@ -219,7 +219,7 @@ function OpenHistory()
 		"echo history_path
 		execute "Vex".history_path
 		let t:netrw_win_id = win_getid()
-		execute "vertical resize 17"
+		execute "vertical resize 14"
 		"let g:history_win_on = 1
 		"normal r
 		if t:netrw_open_count == 0

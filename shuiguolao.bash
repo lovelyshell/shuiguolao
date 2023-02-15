@@ -4,6 +4,9 @@
 #shuiguolao -i
 #shuiguolao file
 
+SGL_BIN=$(realpath $0)
+SGL_DIR=$(dirname $SGL_BIN)
+
 #PARAMS_ALL=$@
 #PARAMS_ALL+=' --python'
 #主要解决传递参数含空格的问题，太恶心了
@@ -31,6 +34,7 @@ function param_exists(){
 
 #we regard everything not starting with '-' as a script
 #发现script参数，后面的参数直接全部传递给后面
+#TODO 这个列表的展开还是不支持空格
 child_args=()
 for arg in "${PARAMS_ALL[@]}"
 do
@@ -61,11 +65,11 @@ do
 	if [[ $arg == '--python' ]]
 	then
 		VM='py'
-		REPL_S='python3 -i '
+		REPL_S="${config[py_BIN]} -i "
 	elif [[ $arg == '--js' ]]
 	then
 		VM='js'	
-		REPL_S='nodejs -r '
+		REPL_S="${config[js_BIN]} -r "
 	elif [[ ${arg:0:2} == '--' ]]
 	then
 		echo 'unspecified scripty type: '$1
@@ -73,8 +77,7 @@ do
 	fi
 done
 
-SGL_BIN=$(realpath $0)
-SGL_DIR=$(dirname $SGL_BIN)
+
 SGL_VM=$SGL_DIR/$VM
 SGL_HISTORY=$SGL_VM'/history'
 SGL_VIMRC_PATH=$SGL_DIR/shuiguolao.vimrc
@@ -82,15 +85,30 @@ SGL_VIMRC_PATH=$SGL_DIR/shuiguolao.vimrc
 
 REPL_CMD=$REPL_S$SGL_VM/terminal.$VM
 
+#read config.txt and build configuration dictionary
+i=1
+declare -A config
+while read line; do
+	key=${line%=*}
+	value=${line#*=}
+	if [[ $key ]]
+	then
+		config[$key]=$value
+	fi
+done < $SGL_DIR/config.txt
+#echo ${!config[@]}
+#echo ${config[@]}
+
 RUN_SCRIPT=''
 if [[ $SCRIPT_PATH != '' ]]
 then
+	BIN=${config["$SCRIPT_SUFFIX"_BIN]}
 	if [[ $SCRIPT_SUFFIX == 'py' ]]
 	then
-		RUN_SCRIPT='python3 '$SGL_DIR/py/shuiguolao.py
+		RUN_SCRIPT="$BIN "$SGL_DIR/py/shuiguolao.py
 	elif [[ $SCRIPT_SUFFIX == 'js' ]]
 	then
-		RUN_SCRIPT='nodejs -r '$SGL_DIR/js/terminal.js
+		RUN_SCRIPT="$BIN -r "$SGL_DIR/js/terminal.js
 	else 
 		echo 'unknown script type, quit..'
 		exit -1
@@ -115,7 +133,7 @@ elif [[ $(param_exists -i) ]]
 then
 	$REPL_CMD
 else 
-	vim -S "$SGL_VIMRC_PATH" "shuiguolao-$VM"
+	${config[vim_BIN]} -S "$SGL_VIMRC_PATH" "shuiguolao-$VM"
 fi
 
 

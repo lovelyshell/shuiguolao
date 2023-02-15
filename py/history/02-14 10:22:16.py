@@ -9,11 +9,13 @@ print(f'************run {sgl_run_timestamp_s}\
 #<C-S>-r  save and run file                 #
 #<C-S>-R  save and prepare to run file      #
 #<C-S>-N  create a new file                 #
-#created at xxxx/xx/xx xx:xx:xx             #
+#created at 2023/02/14 10:22:16             #
 ####DO NOT EDIT LINES ABOVE!!################
 ####WRITE YOUR CODE BELOW####################
 
 
+for f in cwd.files:
+    print(f.name)
 
 
 

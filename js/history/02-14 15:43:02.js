@@ -9,7 +9,9 @@ console.log(`****************run\
 *<C-S>-r  save and run file                   *
 *<C-S>-R  save and prepare to run file        *
 *<C-S>-N  create a new file                   *
-*created at xxxx/xx/xx xx:xx:xx               *
+*created at 2023/02/14 15:43:02               *
 ***********DO NOT EDIT LINES ABOVE!!***********
 ***********WRITE YOUR CODE BELOW**************/
-
+for (f of cwd.files){
+    console.log(f.size)
+}
