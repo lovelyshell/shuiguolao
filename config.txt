@@ -1,6 +1,5 @@
-py_BIN=python2
+py_BIN=python3
 js_BIN=nodejs
 rb_BIN=/usr/bin/ruby
-lua_BIN=lua
 
-vim_BIN=nvim/nvim.appimage
+vim_BIN=vim
