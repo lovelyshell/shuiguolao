@@ -7,18 +7,20 @@
 SGL_BIN=$(realpath $0)
 SGL_DIR=$(dirname $SGL_BIN)
 
-#PARAMS_ALL=$@
-#PARAMS_ALL+=' --python'
-#主要解决传递参数含空格的问题，太恶心了
-#the last -- merge prior, so first as default option 
-PARAMS_ALL=('--python')
+
+#read config.txt and build configuration dictionary
 i=1
-for arg in "$@"
-do
-	echo $arg
-	PARAMS_ALL[$i]=$arg
-	i=$i+1
-done
+declare -A config
+while read line; do
+	key=${line%=*}
+	value=${line#*=}
+	if [[ $key ]]
+	then
+		config[$key]=$value
+	fi
+done < $SGL_DIR/config.txt
+#echo ${!config[@]}
+#echo ${config[@]}
 
 #echo '>>>'${PARAMS_ALL[0]} ${PARAMS_ALL[1]}
 function param_exists(){
@@ -36,7 +38,7 @@ function param_exists(){
 #发现script参数，后面的参数直接全部传递给后面
 #TODO 这个列表的展开还是不支持空格
 child_args=()
-for arg in "${PARAMS_ALL[@]}"
+for arg in "$@"
 do
 	if [[ $SCRIPT_PATH ]]
 	then
@@ -51,89 +53,106 @@ do
 		# when no suffix stay same, so have the second condition,
 		if [[ $SCRIPT_SUFFIX == '' ]] || [[ $SCRIPT_SUFFIX == $arg ]]
 		then
+			break
 			echo 'is  '$SCRIPT_PATH' a script path? quit..'
 			exit -1
 		fi
 	fi
 done
 
+#PARAMS_ALL=$@
+#PARAMS_ALL+=' --python'
+#主要解决传递参数含空格的问题，太恶心了
+#the last -- merge prior, so first as default option 
+#在没有检测到script_path的情况下，才追加--python做为默认
+if [[ $SCRIPT_PATH == '' ]]
+then
+	PARAMS_ALL=('--python')
+else
+	PARAMS_ALL=()
+fi
+i=1
+for arg in "$@"
+do
+	echo $arg
+	PARAMS_ALL[$i]=$arg
+	i=$i+1
+done
 
-#if [[ $SCRIPT_PATH ]] && [[ -z $SCRIPT_SUFFIX ]]
-#fi
+#接下来检测--vm
+
+
 for arg in "${PARAMS_ALL[@]}"
 do
 	if [[ $arg == '--python' ]]
 	then
 		VM='py'
-		REPL_S="${config[py_BIN]} -i "
 	elif [[ $arg == '--js' ]]
 	then
 		VM='js'	
-		REPL_S="${config[js_BIN]} -r "
 	elif [[ ${arg:0:2} == '--' ]]
 	then
-		echo 'unspecified scripty type: '$1
+		echo 'unspecified scripty type: '$arg
 		exit -1
 	fi
 done
 
+#接下来检测--VM是否与SUFFIX冲突
+if [[ $VM ]]
+then
+	if [[ $SCRIPT_SUFFIX ]] && [[ $VM != $SCRIPT_SUFFIX ]] 
+	then
+		echo 'conflict suffix:'$SCRIPT_SUFFIX' with --'$VM		
+		exit -1
+	fi
+else
+	VM=$SCRIPT_SUFFIX
+fi
 
+
+VM_BIN=${config["$VM"_BIN]}
 SGL_VM=$SGL_DIR/$VM
 SGL_HISTORY=$SGL_VM'/history'
 SGL_VIMRC_PATH=$SGL_DIR/shuiguolao.vimrc
-#echo $SGL_VIMRC_PATH
+#注意,lib目录只能放在最后面，否则会出奇怪错误?
+VM_PATH=$SGL_VM/lib:$SGL_VM/history
 
-REPL_CMD=$REPL_S$SGL_VM/terminal.$VM
-
-#read config.txt and build configuration dictionary
-i=1
-declare -A config
-while read line; do
-	key=${line%=*}
-	value=${line#*=}
-	if [[ $key ]]
-	then
-		config[$key]=$value
-	fi
-done < $SGL_DIR/config.txt
-#echo ${!config[@]}
-#echo ${config[@]}
-
-RUN_SCRIPT=''
-if [[ $SCRIPT_PATH != '' ]]
+if [[ $VM == 'py' ]]
 then
-	BIN=${config["$SCRIPT_SUFFIX"_BIN]}
-	if [[ $SCRIPT_SUFFIX == 'py' ]]
-	then
-		RUN_SCRIPT="$BIN "$SGL_DIR/py/shuiguolao.py
-	elif [[ $SCRIPT_SUFFIX == 'js' ]]
-	then
-		RUN_SCRIPT="$BIN -r "$SGL_DIR/js/terminal.js
-	else 
-		echo 'unknown script type, quit..'
-		exit -1
-	fi
+	#BIN=${config[py_BIN]}
+	REPL_S="$VM_BIN -i "
+	export PYTHONPATH=$PYTHONPATH:$VM_PATH
+elif [[ $VM == 'js' ]]
+then
+	#VM='js'	
+	#BIN=${config[js_BIN]}
+	REPL_S="$VM_BIN -r "
+	export NODE_PATH=$NODE_PATH:$VM_PATH
+else
+	exit -1
 fi
+REPL_CMD=$REPL_S$SGL_VM/lib/preload.$VM
+#echo $PYTHONPATH, $NODE_PATH
+
 
 
 #make file name
 st=`date +-%m-%d\ %H:%M:%S`
 st=${st:2:-1}
 #echo "The date and time are:" $st
-#INPUT_FILE_NAME=$st."$VM"
-#INPUT_FILE_PATH=$SGL_HISTORY/$INPUT_FILE_NAME
 
-
-if [[ $RUN_SCRIPT ]]
+if [[ $SCRIPT_PATH ]]
 then
 	#echo $RUN_SCRIPT
 	#echo $SCRIPT_PATH
-	$RUN_SCRIPT "$SCRIPT_PATH" "${child_args[@]}"
+	#$RUN_SCRIPT "$SCRIPT_PATH" "${child_args[@]}"
+	$VM_BIN "$SCRIPT_PATH" "${child_args[@]}"
 elif [[ $(param_exists -i) ]]
 then
+	echo $REPL_CMD
 	$REPL_CMD
 else 
-	${config[vim_BIN]} -S "$SGL_VIMRC_PATH" "shuiguolao-$VM"
+	${config["vim_BIN"]} -S "$SGL_VIMRC_PATH" "shuiguolao-$VM"
 fi
 
 

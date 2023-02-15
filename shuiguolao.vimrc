@@ -72,9 +72,9 @@ function TryInitSglTab()
 	endif
 
 	let fname = expand('%')
-	if fname == 'jshuiguolao' || fname == 'jsh' || fname == 'shuiguolao-js'
+	if fname == 'jshuiguolao' || fname == 'jsh' || fname == 'shuiguolao-js' || fname == 'js-shuiguolao'
 		let vt = 'js'
-	elseif fname == 'pshuiguolao' || fname == 'psh'||fname == 'shuiguolao-py' || fname == 'shuiguolao-python'
+	elseif fname == 'pshuiguolao' || fname == 'psh'||fname == 'shuiguolao-py' || fname == 'shuiguolao-python' || fname == 'py-shuiguolao'
 		let vt = 'py'
 	else
 		return

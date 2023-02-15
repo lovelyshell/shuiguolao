@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module nodoc-File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>nodoc-File</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/amily/lab/shuiguolao/py/lib/nodoc-File.py">/home/amily/lab/shuiguolao/py/lib/nodoc-File.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;-*-&nbsp;coding:&nbsp;utf8&nbsp;-*-<br>
+#目前提供只读的接口，所有修改文件的api都在测试，修改还涉及到cache的问题</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="datetime.html">datetime</a><br>
+<a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="shutil.html">shutil</a><br>
+<a href="stat.html">stat</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+<a href="tempfile.html">tempfile</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+<a href="traceback.html">traceback</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="nodoc-File.html#File">File</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="File">class <strong>File</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="File-exists"><strong>exists</strong></a>(self, follow_symlinks=False)</dt><dd><tt>:&nbsp;If&nbsp;this&nbsp;file&nbsp;exists.<br>
+:return:&nbsp;boolean</tt></dd></dl>
+
+<dl><dt><a name="File-isDir"><strong>isDir</strong></a>(self, follow_symlinks=False)</dt><dd><tt>:&nbsp;If&nbsp;this&nbsp;is&nbsp;a&nbsp;directory.</tt></dd></dl>
+
+<dl><dt><a name="File-isFile"><strong>isFile</strong></a>(self, follow_symlinks=False)</dt><dd><tt>:&nbsp;If&nbsp;this&nbsp;is&nbsp;a&nbsp;regular&nbsp;file.</tt></dd></dl>
+
+<dl><dt><a name="File-isLink"><strong>isLink</strong></a>(self)</dt><dd><tt>:&nbsp;If&nbsp;this&nbsp;is&nbsp;a&nbsp;symbol&nbsp;link.</tt></dd></dl>
+
+<dl><dt><a name="File-readlines"><strong>readlines</strong></a>(self, eol=None, encoding='utf-8')</dt><dd><tt>:Read&nbsp;and&nbsp;return&nbsp;a&nbsp;list&nbsp;of&nbsp;lines&nbsp;from&nbsp;the&nbsp;file.&nbsp;<br>
+:Equivalent&nbsp;to&nbsp;this.<a href="#File-readtext">readtext</a>(encoding).split(eol)<br>
+@param&nbsp;eol&nbsp;str&nbsp;<br>
+&nbsp;The&nbsp;"end&nbsp;of&nbsp;line".&nbsp;specify&nbsp;the&nbsp;line&nbsp;separator&nbsp;to&nbsp;split&nbsp;text&nbsp;to&nbsp;lines.<br>
+&nbsp;When&nbsp;None,&nbsp;use&nbsp;the&nbsp;OS&nbsp;line&nbsp;separator.<br>
+@return&nbsp;List[str]</tt></dd></dl>
+
+<dl><dt><a name="File-readlink"><strong>readlink</strong></a>(self)</dt><dd><tt>Return&nbsp;the&nbsp;path&nbsp;to&nbsp;which&nbsp;the&nbsp;symbolic&nbsp;link&nbsp;points.<br>
+@return&nbsp;str</tt></dd></dl>
+
+<dl><dt><a name="File-readraw"><strong>readraw</strong></a>(self)</dt><dd><tt>Read&nbsp;and&nbsp;return&nbsp;the&nbsp;file's&nbsp;content&nbsp;as&nbsp;is.<br>
+@return&nbsp;bytes<br>
+:&nbsp;Avaliable&nbsp;when&nbsp;<a href="#File-isFile">isFile</a>()</tt></dd></dl>
+
+<dl><dt><a name="File-readtext"><strong>readtext</strong></a>(self, encoding='utf-8')</dt><dd><tt>Read&nbsp;and&nbsp;return&nbsp;the&nbsp;decoded&nbsp;contents&nbsp;of&nbsp;file&nbsp;as&nbsp;a&nbsp;string.<br>
+:Equivalent&nbsp;to&nbsp;this.<a href="#File-readraw">readraw</a>().decode(encoding)<br>
+@param&nbsp;encoding&nbsp;str&nbsp;<br>
+&nbsp;The&nbsp;name&nbsp;of&nbsp;encoding&nbsp;used&nbsp;to&nbsp;decode&nbsp;file's&nbsp;content&nbsp;into&nbsp;string.<br>
+@return&nbsp;str</tt></dd></dl>
+
+<dl><dt><a name="File-writelines"><strong>writelines</strong></a>(self, lines, eol=None, encoding='utf-8')</dt><dd><tt>:Write&nbsp;a&nbsp;list&nbsp;of&nbsp;lines&nbsp;to&nbsp;the&nbsp;file.&nbsp;<br>
+:Equivalent&nbsp;to&nbsp;this.<a href="#File-writetext">writetext</a>(&nbsp;eol.join(lines)&nbsp;,&nbsp;encoding&nbsp;)<br>
+@param&nbsp;lines&nbsp;List[str]<br>
+@param&nbsp;eol&nbsp;str&nbsp;<br>
+&nbsp;The&nbsp;"end&nbsp;of&nbsp;line".&nbsp;Specify&nbsp;the&nbsp;line&nbsp;separator&nbsp;added&nbsp;at&nbsp;the&nbsp;line&nbsp;end&nbsp;on&nbsp;write.<br>
+&nbsp;When&nbsp;None,&nbsp;use&nbsp;the&nbsp;OS&nbsp;line&nbsp;separator.</tt></dd></dl>
+
+<dl><dt><a name="File-writelink"><strong>writelink</strong></a>(self, target)</dt><dd><tt>:Make&nbsp;this&nbsp;symbol&nbsp;link&nbsp;point&nbsp;to&nbsp;target.<br>
+@param&nbsp;target&nbsp;str</tt></dd></dl>
+
+<dl><dt><a name="File-writeraw"><strong>writeraw</strong></a>(self, raw)</dt><dd><tt>Write&nbsp;bytes&nbsp;into&nbsp;this&nbsp;file&nbsp;as&nbsp;is.<br>
+@param&nbsp;raw&nbsp;bytes</tt></dd></dl>
+
+<dl><dt><a name="File-writetext"><strong>writetext</strong></a>(self, text, encoding='utf-8')</dt><dd><tt>Encode&nbsp;text&nbsp;and&nbsp;write&nbsp;to&nbsp;file.<br>
+:Equivalent&nbsp;to&nbsp;this.<a href="#File-writeraw">writeraw</a>(text.encode(encoding))<br>
+@param&nbsp;text&nbsp;str<br>
+@param&nbsp;encoding&nbsp;str&nbsp;<br>
+&nbsp;The&nbsp;name&nbsp;of&nbsp;encoding&nbsp;used&nbsp;to&nbsp;encode&nbsp;string&nbsp;into&nbsp;file's&nbsp;bytes.</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="File-R"><strong>R</strong></a>(pathlike, fn, max_depth=68719476735, skip_zero=True)</dt><dd><tt>:Recursively&nbsp;walk&nbsp;through&nbsp;the&nbsp;directory&nbsp;'pathlike',&nbsp;and&nbsp;perform&nbsp;operaton&nbsp;'fn'&nbsp;on&nbsp;each&nbsp;node.<br>
+:param:&nbsp;pathlike&nbsp;str|path.Path|<a href="#File">File</a><br>
+&nbsp;Path-like&nbsp;<a href="builtins.html#object">object</a>,&nbsp;specify&nbsp;the&nbsp;directory&nbsp;to&nbsp;recurse&nbsp;into<br>
+:param:&nbsp;fn&nbsp;function<br>
+&nbsp;User&nbsp;function&nbsp;to&nbsp;execute&nbsp;on&nbsp;each&nbsp;node,&nbsp;which&nbsp;should&nbsp;be&nbsp;like:<br>
+&nbsp;def&nbsp;foo(f:<a href="#File">File</a>,&nbsp;rinfo:<a href="#File">File</a>.RInfo)<br>
+&nbsp;Argument&nbsp;'f'&nbsp;indicates&nbsp;the&nbsp;<a href="#File">File</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;of&nbsp;the&nbsp;node.&nbsp;<br>
+&nbsp;Argument&nbsp;'rinfo'&nbsp;takes&nbsp;other&nbsp;travasal&nbsp;context&nbsp;infomation.<br>
+&nbsp;A&nbsp;False&nbsp;return&nbsp;of&nbsp;'fn'&nbsp;will&nbsp;tell&nbsp;R&nbsp;not&nbsp;recurse&nbsp;into&nbsp;that&nbsp;node.<br>
+:param:&nbsp;max_depth&nbsp;int<br>
+&nbsp;Maxium&nbsp;depth&nbsp;allowed&nbsp;to&nbsp;recurse&nbsp;into.&nbsp;Node&nbsp;'pathlike'&nbsp;at&nbsp;0,&nbsp;its&nbsp;<br>
+&nbsp;subfiles&nbsp;at&nbsp;1,&nbsp;and&nbsp;so&nbsp;on.&nbsp;Function&nbsp;'fn'&nbsp;is&nbsp;executed&nbsp;on&nbsp;one&nbsp;node&nbsp;before&nbsp;recursing&nbsp;into&nbsp;it.<br>
+:param:&nbsp;skip_zero&nbsp;boolean<br>
+&nbsp;Skip&nbsp;the&nbsp;'fn'&nbsp;operation&nbsp;on&nbsp;node&nbsp;'pathlike',&nbsp;whose&nbsp;depth&nbsp;is&nbsp;zero.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>children</strong></dt>
+<dd><tt>:&nbsp;List[File]<br>
+:&nbsp;An&nbsp;array&nbsp;of&nbsp;all&nbsp;File&nbsp;objects&nbsp;under&nbsp;the&nbsp;directory,&nbsp;equivalent&nbsp;to&nbsp;this.dict.values().<br>
+:&nbsp;Available&nbsp;when&nbsp;isDir().</tt></dd>
+</dl>
+<dl><dt><strong>dict</strong></dt>
+<dd><tt>:&nbsp;Dict[str,&nbsp;File]<br>
+:&nbsp;Collect&nbsp;all&nbsp;files&nbsp;under&nbsp;the&nbsp;directory,&nbsp;file&nbsp;name&nbsp;as&nbsp;key,&nbsp;corresponding&nbsp;File&nbsp;object&nbsp;as&nbsp;value.<br>
+:&nbsp;Available&nbsp;when&nbsp;isDir().</tt></dd>
+</dl>
+<dl><dt><strong>files</strong></dt>
+<dd><tt>alias&nbsp;of&nbsp;"children"</tt></dd>
+</dl>
+<dl><dt><strong>lines</strong></dt>
+<dd><tt>:&nbsp;List[str]<br>
+@getter&nbsp;readlines()<br>
+:&nbsp;Avaliable&nbsp;when&nbsp;isFile()</tt></dd>
+</dl>
+<dl><dt><strong>link</strong></dt>
+<dd><tt>:&nbsp;str<br>
+@getter&nbsp;this.readlink()<br>
+:&nbsp;Avaliable&nbsp;when&nbsp;isLink()</tt></dd>
+</dl>
+<dl><dt><strong>list</strong></dt>
+<dd><tt>:&nbsp;List[str]<br>
+:&nbsp;An&nbsp;array&nbsp;of&nbsp;all&nbsp;file&nbsp;names&nbsp;under&nbsp;the&nbsp;directory,&nbsp;equivalent&nbsp;to&nbsp;this.dict.keys()<br>
+:&nbsp;Available&nbsp;when&nbsp;isDir()</tt></dd>
+</dl>
+<dl><dt><strong>name</strong></dt>
+<dd><tt>:&nbsp;str<br>
+:&nbsp;file&nbsp;name</tt></dd>
+</dl>
+<dl><dt><strong>org_p</strong></dt>
+<dd><tt>:&nbsp;pathlib.Path<br>
+:&nbsp;The&nbsp;original&nbsp;path,&nbsp;got&nbsp;from&nbsp;File's&nbsp;constructor.</tt></dd>
+</dl>
+<dl><dt><strong>org_path</strong></dt>
+<dd><tt>:&nbsp;str&nbsp;<br>
+:&nbsp;The&nbsp;original&nbsp;path,&nbsp;got&nbsp;from&nbsp;File's&nbsp;constructor.</tt></dd>
+</dl>
+<dl><dt><strong>p</strong></dt>
+<dd><tt>pathlib.Path<br>
+Path&nbsp;object,&nbsp;representing&nbsp;the&nbsp;absolute&nbsp;path&nbsp;of&nbsp;this&nbsp;file.</tt></dd>
+</dl>
+<dl><dt><strong>parent</strong></dt>
+<dd><tt>:&nbsp;File&nbsp;<br>
+:&nbsp;A&nbsp;File&nbsp;object&nbsp;representing&nbsp;the&nbsp;parent&nbsp;directory.</tt></dd>
+</dl>
+<dl><dt><strong>path</strong></dt>
+<dd><tt>:&nbsp;str<br>
+The&nbsp;absolute&nbsp;path&nbsp;of&nbsp;this&nbsp;file.</tt></dd>
+</dl>
+<dl><dt><strong>raw</strong></dt>
+<dd><tt>:&nbsp;bytes<br>
+@getter&nbsp;readraw()<br>
+:&nbsp;Avaliable&nbsp;when&nbsp;isFile()</tt></dd>
+</dl>
+<dl><dt><strong>stat</strong></dt>
+<dd><tt>:&nbsp;os.stat_result<br>
+:&nbsp;Obtained&nbsp;from&nbsp;os.stat().<br>
+:&nbsp;You&nbsp;won't&nbsp;use&nbsp;it&nbsp;usually,&nbsp;because&nbsp;File&nbsp;library&nbsp;played&nbsp;some&nbsp;tricks&nbsp;so&nbsp;that&nbsp;all&nbsp;its&nbsp;attributes&nbsp;can&nbsp;be&nbsp;indexed&nbsp;directly&nbsp;on&nbsp;File.<br>
+like:<br>
+this.size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;this.stat.st_size<br>
+this.atime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;this.stat.st_atime<br>
+...<br>
+this.uid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;this.stat.st_uid</tt></dd>
+</dl>
+<dl><dt><strong>target</strong></dt>
+<dd><tt>:&nbsp;File<br>
+:&nbsp;A&nbsp;File&nbsp;object,&nbsp;representing&nbsp;the&nbsp;final&nbsp;target&nbsp;of&nbsp;the&nbsp;symbol&nbsp;link.<br>
+:&nbsp;Available&nbsp;when&nbsp;isLink().</tt></dd>
+</dl>
+<dl><dt><strong>text</strong></dt>
+<dd><tt>:&nbsp;str<br>
+@getter&nbsp;readtext()<br>
+:&nbsp;Avaliable&nbsp;when&nbsp;isFile()</tt></dd>
+</dl>
+<dl><dt><strong>type</strong></dt>
+<dd><tt>:&nbsp;str<br>
+:&nbsp;file&nbsp;type.&nbsp;one&nbsp;of&nbsp;the&nbsp;following:<br>
+&nbsp;&nbsp;'directory'&nbsp;'character'&nbsp;'block'&nbsp;'file'&nbsp;'fifo'&nbsp;'sockect'&nbsp;'port'&nbsp;'whiteout'&nbsp;'link'</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>RInfo</strong> = &lt;class 'nodoc-File.File.RInfo'&gt;<dd><tt>:&nbsp;<a href="#File">File</a>&nbsp;library&nbsp;use&nbsp;this&nbsp;structure&nbsp;to&nbsp;pass&nbsp;recursive&nbsp;context&nbsp;infomation&nbsp;<br>
+&nbsp;&nbsp;to&nbsp;user&nbsp;handler&nbsp;function&nbsp;as&nbsp;an&nbsp;argument.&nbsp;<br>
+:&nbsp;Attributes:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;.depth&nbsp;int<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Current&nbsp;recursive&nbsp;depth</tt></dl>
+
+<dl><dt><strong>TYPE_BLK</strong> = 'block'</dl>
+
+<dl><dt><strong>TYPE_CHR</strong> = 'character'</dl>
+
+<dl><dt><strong>TYPE_DIR</strong> = 'directory'</dl>
+
+<dl><dt><strong>TYPE_FIFO</strong> = 'fifo'</dl>
+
+<dl><dt><strong>TYPE_LINK</strong> = 'link'</dl>
+
+<dl><dt><strong>TYPE_PORT</strong> = 'port'</dl>
+
+<dl><dt><strong>TYPE_REG</strong> = 'file'</dl>
+
+<dl><dt><strong>TYPE_SOCK</strong> = 'sockect'</dl>
+
+<dl><dt><strong>TYPE_WHT</strong> = 'whiteout'</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>has_follow_symlinks_impl</strong> = False</td></tr></table>
+</body></html>

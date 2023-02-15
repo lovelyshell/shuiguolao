@@ -1,5 +1,6 @@
 #!/usr/bin/shuiguolao
 #shuiguolao version: 0.1
+from preload import *
 print(f'****************run {sgl_run_timestamp_s}************')
 ################shuiguolao version 0.1#####################
 #shortcut:                                                #

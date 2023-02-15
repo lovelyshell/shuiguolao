@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module nodoc-Re</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>nodoc-Re</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/amily/lab/shuiguolao/py/lib/nodoc-Re.py">/home/amily/lab/shuiguolao/py/lib/nodoc-Re.py</a></font></td></tr></table>
+    <p><tt>#############turtorial############<br>
+#预查&nbsp;https://www.cnblogs.com/silence-gtx/p/15046027.html<br>
+#预查&nbsp;https://www.jianshu.com/p/8bf162425d83%20<br>
+#https://github.com/ziishaned/learn-regex</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="re.html">re</a><br>
+</td><td width="25%" valign=top></td><td width="25%" valign=top></td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="nodoc-Re.html#Re">Re</a>
+</font></dt><dt><font face="helvetica, arial"><a href="nodoc-Re.html#SetTemplate">SetTemplate</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Re">class <strong>Re</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Re">Re</a>(pattern,&nbsp;**kw)<br>
+&nbsp;<br>
+<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="Re-Assert"><strong>Assert</strong></a>(S)</dt><dd><tt>lookahead&nbsp;assertion.&nbsp;Equalilavant&nbsp;to&nbsp;(?=S.regex)<br>
+@param&nbsp;S&nbsp;<a href="#Re">Re</a><br>
+&nbsp;assertion&nbsp;content.</tt></dd></dl>
+
+<dl><dt><a name="Re-AssertNot"><strong>AssertNot</strong></a>(S)</dt><dd><tt>negative&nbsp;lookahead&nbsp;assertion.&nbsp;Equalilavant&nbsp;to&nbsp;(?!S.regex)<br>
+@param&nbsp;S&nbsp;<a href="#Re">Re</a><br>
+&nbsp;assertion&nbsp;content.</tt></dd></dl>
+
+<dl><dt><a name="Re-__init__"><strong>__init__</strong></a>(self, pattern, **kw)</dt><dd><tt>:&nbsp;Constructure&nbsp;of&nbsp;a&nbsp;regular&nbsp;expression&nbsp;<a href="builtins.html#object">object</a>.<br>
+@param&nbsp;pattern&nbsp;str<br>
+A&nbsp;string&nbsp;used&nbsp;to&nbsp;describe&nbsp;the&nbsp;match&nbsp;pattern.<br>
+@param&nbsp;fmt&nbsp;str<br>
+Specify&nbsp;the&nbsp;syntax&nbsp;you&nbsp;used&nbsp;just&nbsp;now&nbsp;in&nbsp;'pattern'.&nbsp;4&nbsp;options&nbsp;provided:<br>
+'cseq'(default):&nbsp;character&nbsp;sequence<br>
+'cenum':&nbsp;character&nbsp;enumeration.<br>
+'crange':&nbsp;character&nbsp;range.<br>
+'regex':&nbsp;regular&nbsp;expression<br>
+The&nbsp;former&nbsp;3&nbsp;options&nbsp;provide&nbsp;a&nbsp;foolish&nbsp;way&nbsp;to&nbsp;write&nbsp;your&nbsp;pattern,&nbsp;but&nbsp;<br>
+easy&nbsp;to&nbsp;use:<br>
+Examples&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;regex&nbsp;equivalents<br>
+r&nbsp;=&nbsp;<a href="#Re">Re</a>('az',&nbsp;&nbsp;&nbsp;&nbsp;fmt='cseq')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'az'<br>
+r&nbsp;=&nbsp;<a href="#Re">Re</a>('az',&nbsp;&nbsp;&nbsp;&nbsp;fmt&nbsp;=&nbsp;'cenum')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'[az]'<br>
+r&nbsp;=&nbsp;<a href="#Re">Re</a>('az',&nbsp;&nbsp;&nbsp;&nbsp;fmt='crange')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'[a-z]'<br>
+r&nbsp;=&nbsp;<a href="#Re">Re</a>('az09',&nbsp;&nbsp;fmt&nbsp;=&nbsp;'crange')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'[a-z0-9]'<br>
+r&nbsp;=&nbsp;<a href="#Re">Re</a>('^-()',&nbsp;&nbsp;fmt='cseq')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'\^\-\(\)'<br>
+r&nbsp;=&nbsp;<a href="#Re">Re</a>('^-()',&nbsp;&nbsp;fmt='cenum')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'[\^\-()]'<br>
+r&nbsp;=&nbsp;<a href="#Re">Re</a>('^-()',&nbsp;&nbsp;fmt='crange')&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;==&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'[\^-\-(-)]'</tt></dd></dl>
+
+<dl><dt><a name="Re-copy"><strong>copy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Re-exec"><strong>exec</strong></a>(self, text, flags='')</dt><dd><tt>Search&nbsp;pattern&nbsp;in&nbsp;text,&nbsp;return&nbsp;a&nbsp;re.Match&nbsp;<a href="builtins.html#object">object</a>,&nbsp;None&nbsp;if&nbsp;not.&nbsp;But:<br>
+@param&nbsp;flags&nbsp;str<br>
+&nbsp;If&nbsp;'g'&nbsp;in&nbsp;flags,&nbsp;global&nbsp;matching&nbsp;will&nbsp;be&nbsp;performed,&nbsp;and&nbsp;return&nbsp;<br>
+an&nbsp;array&nbsp;of&nbsp;re.Match&nbsp;objects,&nbsp;empty&nbsp;if&nbsp;not.<br>
+&nbsp;If&nbsp;'i'&nbsp;in&nbsp;flags,&nbsp;perform&nbsp;case-intensitive&nbsp;matching.</tt></dd></dl>
+
+<dl><dt><a name="Re-least"><strong>least</strong></a>(self, _min, **kw)</dt><dd><tt>Equivalents&nbsp;to&nbsp;<a href="#Re-repeat">repeat</a>(_min,&nbsp;<a href="#Re">Re</a>.REPEAT_MAX).</tt></dd></dl>
+
+<dl><dt><a name="Re-name"><strong>name</strong></a>(self, _name=None)</dt><dd><tt>return&nbsp;a&nbsp;new&nbsp;<a href="#Re">Re</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;decorated&nbsp;as&nbsp;a&nbsp;named&nbsp;capture&nbsp;group,<br>
+which&nbsp;can&nbsp;be&nbsp;refered&nbsp;later&nbsp;using&nbsp;re.Match.group('_name').</tt></dd></dl>
+
+<dl><dt><a name="Re-repeat"><strong>repeat</strong></a>(self, _min, _max=None, **args)</dt><dd><tt>@param&nbsp;_max&nbsp;int<br>
+&nbsp;When&nbsp;None,&nbsp;_max&nbsp;keeps&nbsp;same&nbsp;as&nbsp;_min.<br>
+&nbsp;Use&nbsp;<a href="#Re">Re</a>.REPEAT_MAX&nbsp;to&nbsp;express&nbsp;an&nbsp;unlimited&nbsp;number,&nbsp;or&nbsp;use&nbsp;<a href="#Re-least">least</a>()</tt></dd></dl>
+
+<hr>
+Static methods defined here:<br>
+<dl><dt><a name="Re-Ref"><strong>Ref</strong></a>(_name)</dt><dd><tt>Creating&nbsp;a&nbsp;a&nbsp;new&nbsp;<a href="#Re">Re</a>&nbsp;<a href="builtins.html#object">object</a>&nbsp;representing&nbsp;a&nbsp;backrefence&nbsp;to&nbsp;a&nbsp;named&nbsp;group.<br>
+@param&nbsp;&nbsp;_name&nbsp;str<br>
+&nbsp;The&nbsp;name&nbsp;of&nbsp;the&nbsp;refered&nbsp;group.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>REPEAT_MAX</strong> = 4294967294</dl>
+
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="SetTemplate">class <strong>SetTemplate</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#SetTemplate">SetTemplate</a>(i)<br>
+&nbsp;<br>
+#Regex&nbsp;Template<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="SetTemplate-__getattr__"><strong>__getattr__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="SetTemplate-__init__"><strong>__init__</strong></a>(self, i)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<hr>
+Data and other attributes defined here:<br>
+<dl><dt><strong>dicts</strong> = [{'ALNUM': '[a-zA-Z0-9]', 'ALPHA': '[a-zA-Z]', 'ANY': '([<font color="#c040c0">\n</font>]|.)', 'B': r'\B', 'DIGIT': r'\d', 'DOT': '.', 'LANY': '.', 'LINE_BEGIN': '^', 'LINE_END': '$', 'NEWLINE': r'[\n]', ...}, {'FLOAT': r'\d+\.\d+', 'INT': r'\d+', 'WORD': r'\w+'}]</dl>
+
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-CEnum"><strong>CEnum</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-CRange"><strong>CRange</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-CSeq"><strong>CSeq</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-SRegex"><strong>SRegex</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-re2Re"><strong>re2Re</strong></a>(s)</dt></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>ReT</strong> = &lt;nodoc-Re.SetTemplate object&gt;<br>
+<strong>ReT2</strong> = &lt;nodoc-Re.SetTemplate object&gt;</td></tr></table>
+</body></html>

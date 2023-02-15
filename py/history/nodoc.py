@@ -1,22 +1,21 @@
-#!/usr/bin/python3
+#!/usr/bin/shuiguolao
 #shuiguolao version: 0.1
-print(f'****************run {sgl_run_timestamp_s}************')
-################shuiguolao version 0.1#####################
-#shortcut:                                                #
-#<C-N>    browse history, down                            #
-#<C-P>    browse history, up                              #
-#<C-S>-r  save and run file in main window                #
-#<C-S>-R  save and prepare to run file in main window     #
-#<C-S>-N  create a new file                               #
-#created at 2023/02/03 10:40:39                           #
-###########DO NOT EDIT LINES ABOVE!!#######################
-###########WRITE YOUR CODE BELOW###########################
+from preload import *
+if __name__ == '__main__':
+    print(f'****************run {sgl_run_timestamp_s}************')
+################shuiguolao version 0.1##############
+#shortcut:                                               
+#<C-N>    browse history, down                      #
+#<C-P>    browse history, up                      #
+#<C-S>-r  save and run file in main window               #
+#<C-S>-R  save and prepare to run file in main window    #
+#<C-S>-N  create a new file                              #
+#created at 2023/02/03 10:40:39                          #
+###########DO NOT EDIT LINES ABOVE!!###############
+###########WRITE YOUR CODE BELOW##################
 
 #删除掉所有以##NODOC打头的块，生成前缀为pydoc-的中间文件，供pydoc3调用。
 
-assert len(sys.argv) == 2
-src_path = sys.argv[1]
-src_f = File(src_path)
 
 def indent_width(s):
     w = 0
@@ -29,8 +28,12 @@ def indent_width(s):
             break
     return w
 
+def nodoc_name(old):
+    return 'nodoc-'+old
+
 #re_undoc = ReT.LINE_BEGIN + CSeq('##NODOC') + ReT.LINE_END + ReT.ANY.least(1) + 
-def Nodoc(filepath):
+def nodoc(filepath):
+    src_f = File(filepath)
     lines = src_f.readlines()
     in_nodoc = False
     block_indent = 0
@@ -68,14 +71,22 @@ def Nodoc(filepath):
             break
 
 
+    new_p = src_f.p.with_name(nodoc_name(src_f.name))
     if is_modified:
-        new_p = src_f.p.with_name('pydoc-'+src_f.name)
         f2 = File(new_p)
         print(f2.name)
         f2.writelines(lines)
+    return new_p
 
 
 
+if __name__ == '__main__':
+    print('nodoc.py receive argv list', sys.argv)
+    assert len(sys.argv) == 2
+    src_path = sys.argv[1]
+    nodoc(src_path)
+else:
+    print('nodoc run from script')
 
 
 

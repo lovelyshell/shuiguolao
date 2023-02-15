@@ -78,6 +78,7 @@ import re
 
 
 
+
 class Re():
     REPEAT_MAX = 0xffffffff -1
 
@@ -154,14 +155,24 @@ class Re():
 
 
     def Assert(S):
+        '''
+        lookahead assertion. Equalilavant to (?=S.regex)
+        @param S Re
+         assertion content.
+        '''
         S = Re.As(S)
         s = S.regex
-        s2 = f'(?:{s})'
+        s2 = f'(?={s})'
         newS = Re(s2, fmt=PatternFmt.REGEX)
         newS.op = SetOps.ASSERT
         return newS
 
     def AssertNot(S):
+        '''
+        negative lookahead assertion. Equalilavant to (?!S.regex)
+        @param S Re
+         assertion content.
+        '''
         S = Re.As(S)
         regex = f'(?!{S.regex})'
         newS = Re(regex, fmt=PatternFmt.REGEX)
@@ -175,8 +186,7 @@ class Re():
         @param pattern str
         A string used to describe the match pattern.
         @param fmt str
-        Classic Regex is not the only syntax to write a pattern. This parameter
-        specifies the syntax you used just now in 'pattern'. 4 options provided:
+        Specify the syntax you used just now in 'pattern'. 4 options provided:
         'cseq'(default): character sequence
         'cenum': character enumeration.
         'crange': character range.
@@ -220,7 +230,7 @@ class Re():
             object.__setattr__(self, 'fmt', fmt)
             object.__setattr__(self, 'op', op)
         else:
-            raise TypeError(f'unspecified type of argument {s}')
+            raise TypeError(f'unspecified type of argument {pattern}')
 
     def copy(self):
         return Re(self)         
@@ -281,49 +291,60 @@ class Re():
 
 
 
-    
-
-
 
     
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
-    def repeat(self, _min, _max=None):
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def repeat(self, _min, _max=None, **args):
         '''
         @param _max int
          When None, _max keeps same as _min.
          Use Re.REPEAT_MAX to express an unlimited number, or use least() 
         '''
+        greedy = 1 if 'greedy' not in args else args['greedy']
+            
         if _max == None:
             _max = _min
         ps = Re.OP1(SetOps.REPEAT, self)
-        rep_s = Re.rep_s(_min, _max)
+        rep_s = Re.rep_s(_min, _max, greedy)
         regex = ps  + rep_s
         newS =  re2Re(regex)
         newS.op = SetOps.REPEAT
         return newS
     
-    def least(self, _min):
+    def least(self, _min, **kw):
         '''
         Equivalents to repeat(_min, Re.REPEAT_MAX).
         '''
-        return self.repeat(_min, _max=Re.REPEAT_MAX)
+        return self.repeat(_min, _max=Re.REPEAT_MAX, **kw)
     
 
 
@@ -336,24 +357,35 @@ class Re():
 
     def name(self, _name=None):
         '''
-        When None, return the name of this capture group.
-        Otherwise, return a new Re object decorated as a named capture group,
-        which can be refered using Match.group('_name') later.
+        return a new Re object decorated as a named capture group,
+        which can be refered later using re.Match.group('_name').
         '''
         if _name != None:
             r2 = self.copy()
             r2.setname(_name)
             return r2
         else:
-            return self._name
+            #return self._name
+            raise ValueError('parameter name can not None')
 
+    @staticmethod
+    def Ref(_name):
+        '''
+        Creating a a new Re object representing a backrefence to a named group.
+        @param  _name str
+         The name of the refered group.
+        '''
+        s = f'(?P={_name})'
+        newS = re2Re(s)
+        newS.op = SetOps.REF
+        return newS
     
     def exec(self, text, flags=''):
         '''
-        Search pattern in text, return a Match object, None if not. But:
-        If 'g' in flags, global matching will be performed, and return 
-        an array of Match objects, empty if not.
+        Search pattern in text, return a re.Match object, None if not. But:
         @param flags str
+         If 'g' in flags, global matching will be performed, and return 
+        an array of re.Match objects, empty if not.
          If 'i' in flags, perform case-intensitive matching.
         '''
         regex = self.regex
@@ -395,20 +427,20 @@ class SetTemplate():
         {
                 'ALPHA': r'[a-zA-Z]',
                 'ALNUM': r'[a-zA-Z0-9]',
-                'DIGIT': r'\d',
-                'SPACE': r'\s',
-                'LANY': r'.',
-                'DOT': '.',
-                'ANY': r'[^\n]',
+                'DIGIT': r'\d',     'd':r'\d',
+                'NOT_DIGIT': r'\D', 'd':r'\D',
+                'SPACE': r'\s',     's': r'\s',
+                'NOT_SPACE': r'\S', 'S': r'\S',
+                'LANY': r'.',       'DOT': r'.',
+                'ANY': '([\n]|.)',
                 'NEWLINE': r'[\n]',
                 'WORD': r'\w',
-                'ALNUM_': r'\w',
 
-                #boundary(location)
+                #anchor(location)
                 'LINE_BEGIN': r'^',
                 'LINE_END': r'$',
-                'WORD_BOUNDARY': r'\b',
-                'NOT_WORD_BOUNDARY': r'\B', 
+                'WORD_BOUNDARY': r'\b',         'b':r'\b',
+                'NOT_WORD_BOUNDARY': r'\B',     'B':r'\B',
                 },
             {
                 #csequence
@@ -430,7 +462,7 @@ class SetTemplate():
             S.op = SetOps.CONCAT    #TODO dangerous here
             ret = S
         else:
-            pass
+            raise NameError(f'can not find "{key}" in ReTemplate')
         return ret
 
 

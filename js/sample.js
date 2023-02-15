@@ -1,7 +1,15 @@
 #!/usr/bin/shuiguolao
 
-console.log(`****************run\
-  ${sgl_run_timestamp_s}************`)
+require('preload.js')
+
+import {pathToFileURL} from 'url'
+
+// module was not imported but called directly
+if (import.meta.url === 
+	pathToFileURL(process.argv[1]).href) {
+	console.log(`****************run\
+  	${sgl_run_timestamp_s}************`)
+}
 /***************shuiguolao version 0.1*********
 *shortcut:                                    *
 *<C-N>    browse history, down                *

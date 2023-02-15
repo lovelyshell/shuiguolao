@@ -1,5 +1,7 @@
 #!/usr/bin/shuiguolao
 #shuiguolao version: 0.1
+
+from preload import *
 ################shuiguolao version 0.1#####################
 #shortcut:                                                #
 #<C-N>    browse history, down                            #
@@ -12,8 +14,12 @@
 ###########WRITE YOUR CODE BELOW###########################
 
 
-run_command('nodoc.py
-run_command(['pydoc'])
+import nodoc
+
+if __name__ == '__main__':
+    for py_path in ['py/lib/File.py', 'py/lib/Re.py']:
+        new_p = nodoc.nodoc(py_path)
+        run_command(['pydoc3', '-w', new_p.as_posix()])
 
 
 
