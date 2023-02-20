@@ -29,67 +29,22 @@ from error import *
 
 class User():
     #user shouldn't construct one by hand ?
-    def __init__(self, name, **kw):
-        self.name =name
-        self.kw = kw
+    def __init__(self):
+        self.name =None
+        self.uid=None
         self._entry = None
 
-    def save(self):
-        kw = self.kw
-        name = self.name
-        '''
-        currently we only allow saved to an unexisted user
-        '''
-        passwd = kw['passwd'] if 'passwd' in kw else None
-        home = kw['home'] if 'home' in kw else ('/home/'+name)
-        shell = kw['shell'] if 'shell' in kw else '/bin/sh'
-        #groups = kw['groups'] if 'groups' in kw else None
-        uid = kw['uid'] if 'uid' in kw else None
-        #g = kw['g'] if 'g' in kw else None
 
-        arglist = ['sudo', 'useradd', name]
-        if uid:
-            arglist += ['-u', str(uid)]
-        if shell:
-            arglist += ['-s', shell]
-        if home:
-            arglist += ['-d', home]
-        if UserGroup(name).exists():
-            print(f'Note! group {name} already exists')
-            arglist += ['-g', name]
-        #print(arglist)
-        code = sh_command(arglist)
-        if code != 0:
-            raise Exception(f"create user {name} failed")
-        self.drop_cache()
 
-    def exists(self):
-        try:
-            abc = self.entry
-        except :
-            return False
-        return True
 
-    ##NODOC
-    def drop_cache(self):
-        self._entry = None
 
-    ##NODOC
-    @property
-    def entry(self):
-        if not self._entry:
-            if self.name:
-                self._entry = pwd.getpwnam(self.name)
-            elif 'uid' in self.kw:
-                self._entry = pwd.getpwuid(self.kw['uid'])
-                self.name = self._entry.pw_name
-            else:
-                raise Exception("strange, neither 'name' nor 'uid' supplied for this User!")
-        return self._entry
 
-    @property
-    def uid(self):
-        return self.entry.pw_uid
+
+
+
+
+
+
     @property
     def gid(self):
         return self.entry.pw_gid
@@ -103,9 +58,18 @@ class User():
     def home(self):
         return self.entry.pw_dir
 
-    ##NODOC
-    def __repr__(self):
-        return f'User: {self.name} {self.uid} {self.home} {self.shell} {self.passwd}'
+
+
+
+
+
+
+
+
+
+
+
+
 
     @property
     def group(self):
@@ -136,50 +100,28 @@ class User():
         sh_command(['usermod', '-G', G])
 
 class UserGroup():
-    def __init__(self, name, **kw):
-        self.kw = kw
-        self.name=name
-        self._entry = None
+    def __init__(self):
+        self.name=None
+        self.gid=None
+        self._gr_entry = None
 
-    def exists(self):
-        try:
-            abc = self.entry
-        except:
-            return False
-        return True
 
-    def save(self):
-        code = sh_command(['sudo', 'groupadd', self.name])
-        if code != 0:
-            raise Exception(f"Create usergroup '{gname}' failed!")
 
-    ##NODOC
-    @property
-    def entry(self):
-        if not self._entry:
-            if self.name:
-                self._entry = grp.getgrnam(self.name)
-            elif 'gid' in self.kw:
-                self._entry = grp.getgrgid(self.kw['gid'])
-                self.name = self._entry.gr_name
-            else:
-                raise Exception("strange, neither 'name' nor 'uid' supplied for this User!")
-        return self._entry
+
+
+
+
 
     def drop_cache(self):
-        self._entry = None
-
-    @property
-    def gid(self):
-        return self.entry.gr_gid
+        self._gr_entry = None
 
     @property
     def members(self):
-        return self.entry.gr_mem
+        return self.gr_entry.gr_mem
 
     @property
     def passwd(self):
-        return self.entry.gr_passwd
+        return self.gr_entry.gr_passwd
 
     @property
     def users(self):
@@ -188,6 +130,15 @@ class UserGroup():
             user = os.users.get(u)
             lst.append(user)
         return lst
+
+
+
+
+
+
+
+
+
 
     def remove(self, u):
         param_type_check(u, [int, str, User])
@@ -221,13 +172,13 @@ class UserGroup():
         #必须是-aG,不能是-Ga
         code = sh_command(['sudo', 'usermod', uname, '-aG', self.name])    
         self.drop_cache()
-        return os.users.get(uname)
+        return True if code == 0 else False
 
-    ##NODOC
-    def __repr__(self):
-        g = self
-        s= f"UserGroup: {g.name} {g.gid} {g.members} {g.passwd}"
-        return s
+
+
+
+
+
 
 class UserGroupTable():
     def __init__(self):
@@ -238,31 +189,34 @@ class UserGroupTable():
         arr = grp.getgrall()
         lst = []
         for el in arr:
-            g = UserGroup(el.gr_name)
+            g = UserGroup.from_grp(el)
             lst.append(g)
         return lst
 
     def get(self, g):
         param_type_check(g, [int, str])
         if type(g) == int:
-            group = UserGroup(None, gid=g)
+            fn = grp.getgrgid
         elif type(g) == str:
-            group = UserGroup(g)
+            fn = grp.getgrnam
         else:
             raise TypeError(g)
-        return group if group.exists() else None
-
-    def add(self, name, **kw):
-        g = UserGroup(name, **kw)
-        if g.exists():
-            if 'exists_ok' in kw and kw['exists_ok']:
-                return g
         try:
-            g.save()
-        except Exception as e:
-            print(e)
-            return None
-        return g
+            el = fn(g)
+            ret = UserGroup.from_grp(el)
+        except KeyError:
+            ret = None
+        return ret
+
+    def add(self, gname, **kw):
+        '''
+        if self.get(name):
+        self.groups.add()
+        '''
+        if self.get(gname):
+            raise ExistError(gname)
+        code = sh_command(['sudo', 'groupadd', gname])
+        return None if code != 0 else self.get(gname)
 
     def remove(self, g):
         param_type_check(g, [UserGroup, str])
@@ -276,21 +230,31 @@ class UserTable():
         arr=pwd.getpwall()
         users = []
         for el in arr:
-            user = User(el.pw_name)
+            user = User.from_pw(el)
             users.append(user)
         return users
 
     def add(self, name, **kw):
-        user = User(name, **kw)
-        if user.exists():
-            if 'exists_ok' in kw and kw['exists_ok']:
-                return user
-        try:
-            user.save()
-        except Exception as e:
-            print(e)
-            return None
-        return user
+        passwd = kw['passwd'] if 'passwd' in kw else None
+        home = kw['home'] if 'home' in kw else ('/home/'+name)
+        shell = kw['shell'] if 'shell' in kw else '/bin/sh'
+        #groups = kw['groups'] if 'groups' in kw else None
+        uid = kw['uid'] if 'uid' in kw else None
+        #g = kw['g'] if 'g' in kw else None
+
+        arglist = ['sudo', 'useradd', name]
+        if uid:
+            arglist += ['-u', str(uid)]
+        if shell:
+            arglist += ['-s', shell]
+        if home:
+            arglist += ['-d', home]
+        if os.usergroups.get(name):
+            print(f'Note! group {name} already exists')
+            arglist += ['-g', name]
+        #print(arglist)
+        code = sh_command(arglist)
+        return None if code != 0 else os.users.get(name)
         
     def remove(self, u, **kw):
         param_type_check(u, [str, User])
@@ -306,15 +270,13 @@ class UserTable():
         return None if code != 0 else True
 
     def get(self, u):
-        param_type_check(u, [str,int])
-        uname = None
         if type(u) == int:
-            user = User(None, gid=u)
+            item = pwd.getpwuid(u)
         elif type(u) == str:
-            user = User(u)
+            item = pwd.getpwnam(u)
         else:
             raise TypeError(u)
-        return user if user.exists() else None
+        return User.from_pw(item)
 
 
 os.users = UserTable()

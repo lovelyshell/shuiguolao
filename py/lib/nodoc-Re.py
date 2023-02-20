@@ -414,61 +414,66 @@ def CRange(s):
 def CSeq(s):
     return Re(s, fmt=PatternFmt.CSEQ)
 
-def re2Re(s):
-    return Re(s, fmt=PatternFmt.REGEX)
 
-def SRegex(s):
-    return re2Re(s)
+
+
+
+
+
+
 
 #Regex Template
-class SetTemplate():
-    dicts = [
-        #character set
-        {
-                'ALPHA': r'[a-zA-Z]',
-                'ALNUM': r'[a-zA-Z0-9]',
-                'DIGIT': r'\d',     'd':r'\d',
-                'NOT_DIGIT': r'\D', 'd':r'\D',
-                'SPACE': r'\s',     's': r'\s',
-                'NOT_SPACE': r'\S', 'S': r'\S',
-                'LANY': r'.',       'DOT': r'.',
-                'ANY': '([\n]|.)',
-                'NEWLINE': r'[\n]',
-                'WORD': r'\w',
+class ReTemplate():
 
-                #anchor(location)
-                'LINE_BEGIN': r'^',
-                'LINE_END': r'$',
-                'WORD_BOUNDARY': r'\b',         'b':r'\b',
-                'NOT_WORD_BOUNDARY': r'\B',     'B':r'\B',
-                },
-            {
-                #csequence
-                'WORD': r'\w+',
-                'INT': r'\d+',
-                'FLOAT': r'\d+\.\d+',
-            }
-            ]
 
-    def __init__(self, i):
-        self.i = i
 
-    def __getattr__(self, key):
-        ret = None
-        _dict = SetTemplate.dicts[self.i]
-        if key in _dict:
-            s = _dict[key]
-            S = re2Re(s)
-            S.op = SetOps.CONCAT    #TODO dangerous here
-            ret = S
-        else:
-            raise NameError(f'can not find "{key}" in ReTemplate')
-        return ret
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #模板分组是为了好记，字符集正则往ReT里找，序列正则往ReT2里扎。
-ReT = SetTemplate(0)
-ReT2 = SetTemplate(1)
+ReT = ReTemplate(0)
+ReT2 = ReTemplate(1)
 
 
 

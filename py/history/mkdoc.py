@@ -35,7 +35,7 @@ def remove_unlike(html_path):
     #print(result)
 
 if __name__ == '__main__':
-    for py_path in ['py/lib/File.py', 'py/lib/Re.py']:
+    for py_path in ['py/lib/File.py', 'py/lib/Re.py', 'py/lib/User.py']:
         new_p = nodoc.nodoc(py_path)
 
         run_command(['pydoc3', '-w', new_p.as_posix()])

@@ -11,12 +11,7 @@ import stat
 from pathlib import Path
 import shutil
 
-
-
-
-
-
-
+from utils import *
 
 
 
@@ -729,6 +724,10 @@ class File():
 
 
 
+
+    def __repr__(self):
+        s = self.path
+        return f"File object '{s}'"
         
         
 

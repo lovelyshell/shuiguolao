@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 #shuiguolao version: 0.1
+from preload import *
 ################shuiguolao version 0.1#####################
 #shortcut:                                                #
 #<C-N>    browse history, down                            #
