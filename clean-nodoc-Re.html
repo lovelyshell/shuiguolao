@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+  <head><title>Python: module nodoc-Re</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+</head>
+  <body bgcolor="#f0f0f8">
+
+<p>
+</p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan="3" valign="bottom">&#160;<br/>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&#160;&#160;&#160;&#160;&#160;&#160;</tt></td><td>&#160;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="builtins.html#object">builtins.object</a>
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="nodoc-Re.html#Re">Re</a>
+</font></dt><dt><font face="helvetica, arial"><a href="nodoc-Re.html#SetTemplate">SetTemplate</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+</p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan="3" valign="bottom">&#160;<br/>
+<font color="#000000" face="helvetica, arial"><a name="Re">class <strong>Re</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan="2"><tt>&#160;&#160;&#160;</tt></td>
+<td colspan="2"><tt><a href="#Re">Re</a>(pattern,&#160;**kw)<br/>
+&#160;<br/>
+<br/>&#160;</tt></td></tr>
+<tr><td>&#160;</td>
+<td width="100%">Methods defined here:<br/>
+<dl><dt><a name="Re-Assert"><strong>Assert</strong></a>(S)</dt><dd><tt>lookahead&#160;assertion.&#160;Equalilavant&#160;to&#160;(?=S.regex)<br/>
+@param&#160;S&#160;<a href="#Re">Re</a><br/>
+&#160;assertion&#160;content.</tt></dd></dl>
+
+<dl><dt><a name="Re-AssertNot"><strong>AssertNot</strong></a>(S)</dt><dd><tt>negative&#160;lookahead&#160;assertion.&#160;Equalilavant&#160;to&#160;(?!S.regex)<br/>
+@param&#160;S&#160;<a href="#Re">Re</a><br/>
+&#160;assertion&#160;content.</tt></dd></dl>
+
+<dl><dt><a name="Re-__init__"><strong>__init__</strong></a>(self, pattern, **kw)</dt><dd><tt>:&#160;Constructure&#160;of&#160;a&#160;regular&#160;expression&#160;<a href="builtins.html#object">object</a>.<br/>
+@param&#160;pattern&#160;str<br/>
+A&#160;string&#160;used&#160;to&#160;describe&#160;the&#160;match&#160;pattern.<br/>
+@param&#160;fmt&#160;str<br/>
+Specify&#160;the&#160;syntax&#160;you&#160;used&#160;just&#160;now&#160;in&#160;'pattern'.&#160;4&#160;options&#160;provided:<br/>
+'cseq'(default):&#160;character&#160;sequence<br/>
+'cenum':&#160;character&#160;enumeration.<br/>
+'crange':&#160;character&#160;range.<br/>
+'regex':&#160;regular&#160;expression<br/>
+The&#160;former&#160;3&#160;options&#160;provide&#160;a&#160;foolish&#160;way&#160;to&#160;write&#160;your&#160;pattern,&#160;but&#160;<br/>
+easy&#160;to&#160;use:<br/>
+Examples&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;regex&#160;equivalents<br/>
+r&#160;=&#160;<a href="#Re">Re</a>('az',&#160;&#160;&#160;&#160;fmt='cseq')&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;==&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'az'<br/>
+r&#160;=&#160;<a href="#Re">Re</a>('az',&#160;&#160;&#160;&#160;fmt&#160;=&#160;'cenum')&#160;&#160;&#160;&#160;&#160;==&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'[az]'<br/>
+r&#160;=&#160;<a href="#Re">Re</a>('az',&#160;&#160;&#160;&#160;fmt='crange')&#160;&#160;&#160;&#160;&#160;&#160;==&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'[a-z]'<br/>
+r&#160;=&#160;<a href="#Re">Re</a>('az09',&#160;&#160;fmt&#160;=&#160;'crange')&#160;&#160;&#160;&#160;&#160;==&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'[a-z0-9]'<br/>
+r&#160;=&#160;<a href="#Re">Re</a>('^-()',&#160;&#160;fmt='cseq')&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;==&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'\^\-\(\)'<br/>
+r&#160;=&#160;<a href="#Re">Re</a>('^-()',&#160;&#160;fmt='cenum')&#160;&#160;&#160;&#160;&#160;&#160;&#160;==&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'[\^\-()]'<br/>
+r&#160;=&#160;<a href="#Re">Re</a>('^-()',&#160;&#160;fmt='crange')&#160;&#160;&#160;&#160;&#160;&#160;&#160;==&gt;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;'[\^-\-(-)]'</tt></dd></dl>
+
+<dl><dt><a name="Re-copy"><strong>copy</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="Re-exec"><strong>exec</strong></a>(self, text, flags='')</dt><dd><tt>Search&#160;pattern&#160;in&#160;text,&#160;return&#160;a&#160;re.Match&#160;<a href="builtins.html#object">object</a>,&#160;None&#160;if&#160;not.&#160;But:<br/>
+@param&#160;flags&#160;str<br/>
+&#160;If&#160;'g'&#160;in&#160;flags,&#160;global&#160;matching&#160;will&#160;be&#160;performed,&#160;and&#160;return&#160;<br/>
+an&#160;array&#160;of&#160;re.Match&#160;objects,&#160;empty&#160;if&#160;not.<br/>
+&#160;If&#160;'i'&#160;in&#160;flags,&#160;perform&#160;case-intensitive&#160;matching.</tt></dd></dl>
+
+<dl><dt><a name="Re-least"><strong>least</strong></a>(self, _min, **kw)</dt><dd><tt>Equivalents&#160;to&#160;<a href="#Re-repeat">repeat</a>(_min,&#160;<a href="#Re">Re</a>.REPEAT_MAX).</tt></dd></dl>
+
+<dl><dt><a name="Re-name"><strong>name</strong></a>(self, _name=None)</dt><dd><tt>return&#160;a&#160;new&#160;<a href="#Re">Re</a>&#160;<a href="builtins.html#object">object</a>&#160;decorated&#160;as&#160;a&#160;named&#160;capture&#160;group,<br/>
+which&#160;can&#160;be&#160;refered&#160;later&#160;using&#160;re.Match.group('_name').</tt></dd></dl>
+
+<dl><dt><a name="Re-repeat"><strong>repeat</strong></a>(self, _min, _max=None, **args)</dt><dd><tt>@param&#160;_max&#160;int<br/>
+&#160;When&#160;None,&#160;_max&#160;keeps&#160;same&#160;as&#160;_min.<br/>
+&#160;Use&#160;<a href="#Re">Re</a>.REPEAT_MAX&#160;to&#160;express&#160;an&#160;unlimited&#160;number,&#160;or&#160;use&#160;<a href="#Re-least">least</a>()</tt></dd></dl>
+
+<hr/>
+Static methods defined here:<br/>
+<dl><dt><a name="Re-Ref"><strong>Ref</strong></a>(_name)</dt><dd><tt>Creating&#160;a&#160;a&#160;new&#160;<a href="#Re">Re</a>&#160;<a href="builtins.html#object">object</a>&#160;representing&#160;a&#160;backrefence&#160;to&#160;a&#160;named&#160;group.<br/>
+@param&#160;&#160;_name&#160;str<br/>
+&#160;The&#160;name&#160;of&#160;the&#160;refered&#160;group.</tt></dd></dl>
+
+<hr/>
+Data descriptors defined here:<br/>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&#160;for&#160;instance&#160;variables&#160;(if&#160;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&#160;of&#160;weak&#160;references&#160;to&#160;the&#160;object&#160;(if&#160;defined)</tt></dd>
+</dl>
+<hr/>
+Data and other attributes defined here:<br/>
+<dl><dt><strong>REPEAT_MAX</strong> = 4294967294</dt></dl>
+
+</td></tr></table> <p>
+</p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan="3" valign="bottom">&#160;<br/>
+<font color="#000000" face="helvetica, arial"><a name="SetTemplate">class <strong>SetTemplate</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan="2"><tt>&#160;&#160;&#160;</tt></td>
+<td colspan="2"><tt><a href="#SetTemplate">SetTemplate</a>(i)<br/>
+&#160;<br/>
+#Regex&#160;Template<br/>&#160;</tt></td></tr>
+<tr><td>&#160;</td>
+<td width="100%">Methods defined here:<br/>
+<dl><dt><a name="SetTemplate-__getattr__"><strong>__getattr__</strong></a>(self, key)</dt></dl>
+
+<dl><dt><a name="SetTemplate-__init__"><strong>__init__</strong></a>(self, i)</dt><dd><tt>Initialize&#160;self.&#160;&#160;See&#160;help(type(self))&#160;for&#160;accurate&#160;signature.</tt></dd></dl>
+
+<hr/>
+Data descriptors defined here:<br/>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&#160;for&#160;instance&#160;variables&#160;(if&#160;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&#160;of&#160;weak&#160;references&#160;to&#160;the&#160;object&#160;(if&#160;defined)</tt></dd>
+</dl>
+<hr/>
+Data and other attributes defined here:<br/>
+<dl><dt><strong>dicts</strong> = [{'ALNUM': '[a-zA-Z0-9]', 'ALPHA': '[a-zA-Z]', 'ANY': '([<font color="#c040c0">\n</font>]|.)', 'B': r'\B', 'DIGIT': r'\d', 'DOT': '.', 'LANY': '.', 'LINE_BEGIN': '^', 'LINE_END': '$', 'NEWLINE': r'[\n]', ...}, {'FLOAT': r'\d+\.\d+', 'INT': r'\d+', 'WORD': r'\w+'}]</dt></dl>
+
+</td></tr></table></td></tr></table><p>
+</p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan="3" valign="bottom">&#160;<br/>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&#160;&#160;&#160;&#160;&#160;&#160;</tt></td><td>&#160;</td>
+<td width="100%"><dl><dt><a name="-CEnum"><strong>CEnum</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-CRange"><strong>CRange</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-CSeq"><strong>CSeq</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-SRegex"><strong>SRegex</strong></a>(s)</dt></dl>
+ <dl><dt><a name="-re2Re"><strong>re2Re</strong></a>(s)</dt></dl>
+</td></tr></table><p>
+</p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
+<tr bgcolor="#55aa55">
+<td colspan="3" valign="bottom">&#160;<br/>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&#160;&#160;&#160;&#160;&#160;&#160;</tt></td><td>&#160;</td>
+<td width="100%"><strong>ReT</strong> = &lt;nodoc-Re.SetTemplate object&gt;<br/>
+<strong>ReT2</strong> = &lt;nodoc-Re.SetTemplate object&gt;</td></tr></table>
+</body>
+</html>

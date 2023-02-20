@@ -13,13 +13,35 @@ from preload import *
 ###########DO NOT EDIT LINES ABOVE!!#######################
 ###########WRITE YOUR CODE BELOW###########################
 
-
 import nodoc
+from lxml import html
+etree=html.etree
+
+def remove_unlike(html_path):
+    parser=etree.HTMLParser(encoding='utf-8')
+    html = etree.parse(html_path, parser=parser)
+    html_body = html.xpath('/html/body')[0]
+    #print(html_body)
+    childs = html_body.xpath('child::*')
+    for i in range(0,4):
+        node = childs[i]
+        node.getparent().remove(node)
+        print(node)
+    #print(etree.SubElement(html_body, 1))
+    #print('>>>>',etree.tostring(html_body))
+    result = etree.tostring(html, pretty_print=True)  
+    f = File('clean-'+html_path)
+    f.writeraw(result)
+    #print(result)
 
 if __name__ == '__main__':
     for py_path in ['py/lib/File.py', 'py/lib/Re.py']:
         new_p = nodoc.nodoc(py_path)
+
         run_command(['pydoc3', '-w', new_p.as_posix()])
+        html = new_p.stem + '.html'
+
+        remove_unlike(html)
 
 
 

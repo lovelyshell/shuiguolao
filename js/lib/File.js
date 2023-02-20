@@ -267,6 +267,7 @@ class File{
 	}
 	get list(){ return Object.keys(this.dict) }
 	get files(){return Object.values(this.dict)}
+	get children(){return this.files}
 	get stat(){
 		if(this._stat == null){
 			let _stat = fs.lstatSync(this.path)
@@ -284,7 +285,7 @@ class File{
 		return Path.basename(this._path)
 	}
 
-	read_data(){
+	readdata(){
 		if(this._data == null){
 			let options = {encoding:null}
 			let _data = fs.readFileSync(this._path, options)
@@ -292,36 +293,36 @@ class File{
 		}
 		return this._data;
 	}
-	write_data(data){
+	writedata(data){
 		this.drop_cache()
 		fs.writeFileSync(this.path, data)
 		this._data = data
 	}
 
-	read_text(encoding='utf8'){
+	readtext(encoding='utf8'){
 		//re-decode if user pass another encoding
 		if (this._text == null || this._r_encoding != encoding){
 				this._r_encoding = encoding
-				let data = this.read_data()
+				let data = this.readdata()
 				let s = data.toString(encoding)
 				this._text = s
 		}
 		return this._text
 	}
 
-	//rely on write_data drop cache
-	write_text(s, encoding='utf8'){
+	//rely on writedata drop cache
+	writetext(s, encoding='utf8'){
 		let buf = Buffer.from(s, encoding)
-		this.write_data(buf)
+		this.writedata(buf)
 		this._text = s
 	}
 
-	read_lines(eol=null){
+	readlines(eol=null){
 		//re-split if user pass another eol
 		if(this._lines == null || this._r_eol != eol){
 				this._r_eol = eol
 				if(!eol) eol = getoseol()
-				let text = this.read_text()
+				let text = this.readtext()
 				let lines = text.split(eol)
 				this._lines = lines
 		}
@@ -329,14 +330,14 @@ class File{
 	}
 
 	//rely on write_raw drop cache
-	write_lines(lines, eol=null, encoding='utf8'){
+	writelines(lines, eol=null, encoding='utf8'){
 		if(!eol) eol = getoseol()
 		let s = lines.join(eol)
-		this.write_text(s, encoding=encoding)
+		this.writetext(s, encoding=encoding)
 		this._lines = lines
 	}
 
-	read_link(){
+	readlink(){
 			this.read_check(fs.constants.S_IFLNK)
 			if (this._link == null){
 				let to = fs.readlinkSync(this.path)
@@ -345,7 +346,7 @@ class File{
 			return this._link
 	}
 	
-	write_link(to){
+	writelink(to){
 		let S_IFLNK = fs.constants.S_IFLNK
 		if(this.exists()){
 			if(this.type == S_IFLNK){
@@ -360,10 +361,10 @@ class File{
 		this._link = to
 	}
 
-	read_target(){
+	readtarget(){
 		this.read_check(fs.constants.S_IFLNK)
 		if(this._target == null){
-			let to = this.read_link()
+			let to = this.readlink()
 			if(!Path.isAbsolute(to)){
 				let pathdir = Path.dirname(this.path)
 				to = Path.join(pathdir, to)
@@ -374,11 +375,11 @@ class File{
 		return this._target
 	}
 
-	//rely on write_link drop cache
-	write_target(f){
+	//rely on writelink drop cache
+	writetarget(f){
 		this.write_check(fs.constants.S_IFLNK)
 		let to = f.path
-		this.write_link(to)
+		this.writelink(to)
 		this._target = f
 	}
 
@@ -391,17 +392,17 @@ class File{
 	is_file(){ return this.type == fs.constants.S_IFREG }
 	is_dir(){ return this.type == fs.constants.S_IFDIR }
 
-	get link(){ return this.read_link() }
-	set link(s){ this.write_link(s) }
-	get target(){ return this.read_target() }
-	set target(f){ this.write_target(f) }
+	get link(){ return this.readlink() }
+	set link(s){ this.writelink(s) }
+	get target(){ return this.readtarget() }
+	set target(f){ this.writetarget(f) }
 
-	get data(){return this.read_data()}
-	get text(){return this.read_text()}
-	get lines(){ return this.read_lines() }
-	set data(data){this.write_data(data)}
-	set text(text){this.write_text(text)}
-	set lines(lines){this.write_lines(lines)}
+	get data(){return this.readdata()}
+	get text(){return this.readtext()}
+	get lines(){ return this.readlines() }
+	set data(data){this.writedata(data)}
+	set text(text){this.writetext(text)}
+	set lines(lines){this.writelines(lines)}
 
 	get dev(){return this.stat.dev}
 	get ino(){return this.stat.ino}

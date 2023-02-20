@@ -414,14 +414,17 @@ def CRange(s):
 def CSeq(s):
     return Re(s, fmt=PatternFmt.CSEQ)
 
+##NODOC
 def re2Re(s):
     return Re(s, fmt=PatternFmt.REGEX)
 
+##NODOC
 def SRegex(s):
     return re2Re(s)
 
 #Regex Template
-class SetTemplate():
+class ReTemplate():
+    ##NODOC
     dicts = [
         #character set
         {
@@ -450,12 +453,14 @@ class SetTemplate():
             }
             ]
 
+    ##NODOC
     def __init__(self, i):
         self.i = i
 
+    ##NODOC
     def __getattr__(self, key):
         ret = None
-        _dict = SetTemplate.dicts[self.i]
+        _dict = ReTemplate.dicts[self.i]
         if key in _dict:
             s = _dict[key]
             S = re2Re(s)
@@ -467,8 +472,8 @@ class SetTemplate():
 
 
 #模板分组是为了好记，字符集正则往ReT里找，序列正则往ReT2里扎。
-ReT = SetTemplate(0)
-ReT2 = SetTemplate(1)
+ReT = ReTemplate(0)
+ReT2 = ReTemplate(1)
 
 
 

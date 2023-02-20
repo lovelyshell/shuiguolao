@@ -11,12 +11,7 @@ import stat
 from pathlib import Path
 import shutil
 
-##NODOC
-#pass argument to operation system directly, shell syntax not supported
-def run_command(argv):
-    import subprocess
-    subprocess.Popen(argv, shell=False) 
-
+from utils import *
 
 ##NODOC
 def rawset(it, key, value):
@@ -729,6 +724,10 @@ class File():
                 _parent._dict[new_name] = new_f
                 _parent._stat = None
         f.destroy()
+
+    def __repr__(self):
+        s = self.path
+        return f"File object '{s}'"
         
         
 ##NODOC
