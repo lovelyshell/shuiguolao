@@ -19,15 +19,18 @@
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="datetime.html">datetime</a><br>
+<a href="grp.html">grp</a><br>
 <a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="pwd.html">pwd</a><br>
 <a href="shutil.html">shutil</a><br>
-</td><td width="25%" valign=top><a href="stat.html">stat</a><br>
-<a href="subprocess.html">subprocess</a><br>
+<a href="stat.html">stat</a><br>
+</td><td width="25%" valign=top><a href="subprocess.html">subprocess</a><br>
 <a href="sys.html">sys</a><br>
-</td><td width="25%" valign=top><a href="tempfile.html">tempfile</a><br>
-<a href="time.html">time</a><br>
+<a href="tempfile.html">tempfile</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
 <a href="traceback.html">traceback</a><br>
-</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<a href="varname.html">varname</a><br>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -39,6 +42,8 @@
 </font></dt><dd>
 <dl>
 <dt><font face="helvetica, arial"><a href="nodoc-File.html#File">File</a>
+</font></dt><dt><font face="helvetica, arial"><a href="nodoc-File.html#FilePerm">FilePerm</a>
+</font></dt><dt><font face="helvetica, arial"><a href="nodoc-File.html#FilePermBits">FilePermBits</a>
 </font></dt></dl>
 </dd>
 </dl>
@@ -80,6 +85,8 @@
 @param&nbsp;encoding&nbsp;str&nbsp;<br>
 &nbsp;The&nbsp;name&nbsp;of&nbsp;encoding&nbsp;used&nbsp;to&nbsp;decode&nbsp;file's&nbsp;content&nbsp;into&nbsp;string.<br>
 @return&nbsp;str</tt></dd></dl>
+
+<dl><dt><a name="File-set_perm"><strong>set_perm</strong></a>(self, x)</dt></dl>
 
 <dl><dt><a name="File-writelines"><strong>writelines</strong></a>(self, lines, eol=None, encoding='utf-8')</dt><dd><tt>:Write&nbsp;a&nbsp;list&nbsp;of&nbsp;lines&nbsp;to&nbsp;the&nbsp;file.&nbsp;<br>
 :Equivalent&nbsp;to&nbsp;this.<a href="#File-writetext">writetext</a>(&nbsp;eol.join(lines)&nbsp;,&nbsp;encoding&nbsp;)<br>
@@ -138,6 +145,11 @@ Data descriptors defined here:<br>
 <dl><dt><strong>files</strong></dt>
 <dd><tt>alias&nbsp;of&nbsp;"children"</tt></dd>
 </dl>
+<dl><dt><strong>keys</strong></dt>
+<dd><tt>:&nbsp;List[str]<br>
+:&nbsp;An&nbsp;array&nbsp;of&nbsp;all&nbsp;file&nbsp;names&nbsp;under&nbsp;the&nbsp;directory,&nbsp;equivalent&nbsp;to&nbsp;this.dict.keys()<br>
+:&nbsp;Available&nbsp;when&nbsp;isDir()</tt></dd>
+</dl>
 <dl><dt><strong>lines</strong></dt>
 <dd><tt>:&nbsp;List[str]<br>
 @getter&nbsp;readlines()<br>
@@ -147,11 +159,6 @@ Data descriptors defined here:<br>
 <dd><tt>:&nbsp;str<br>
 @getter&nbsp;this.readlink()<br>
 :&nbsp;Avaliable&nbsp;when&nbsp;isLink()</tt></dd>
-</dl>
-<dl><dt><strong>list</strong></dt>
-<dd><tt>:&nbsp;List[str]<br>
-:&nbsp;An&nbsp;array&nbsp;of&nbsp;all&nbsp;file&nbsp;names&nbsp;under&nbsp;the&nbsp;directory,&nbsp;equivalent&nbsp;to&nbsp;this.dict.keys()<br>
-:&nbsp;Available&nbsp;when&nbsp;isDir()</tt></dd>
 </dl>
 <dl><dt><strong>name</strong></dt>
 <dd><tt>:&nbsp;str<br>
@@ -165,6 +172,8 @@ Data descriptors defined here:<br>
 <dd><tt>:&nbsp;str&nbsp;<br>
 :&nbsp;The&nbsp;original&nbsp;path,&nbsp;got&nbsp;from&nbsp;File's&nbsp;constructor.</tt></dd>
 </dl>
+<dl><dt><strong>owner</strong></dt>
+</dl>
 <dl><dt><strong>p</strong></dt>
 <dd><tt>pathlib.Path<br>
 Path&nbsp;object,&nbsp;representing&nbsp;the&nbsp;absolute&nbsp;path&nbsp;of&nbsp;this&nbsp;file.</tt></dd>
@@ -176,6 +185,8 @@ Path&nbsp;object,&nbsp;representing&nbsp;the&nbsp;absolute&nbsp;path&nbsp;of&nbs
 <dl><dt><strong>path</strong></dt>
 <dd><tt>:&nbsp;str<br>
 The&nbsp;absolute&nbsp;path&nbsp;of&nbsp;this&nbsp;file.</tt></dd>
+</dl>
+<dl><dt><strong>perm</strong></dt>
 </dl>
 <dl><dt><strong>raw</strong></dt>
 <dd><tt>:&nbsp;bytes<br>
@@ -233,6 +244,85 @@ Data and other attributes defined here:<br>
 
 <dl><dt><strong>TYPE_WHT</strong> = 'whiteout'</dl>
 
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FilePerm">class <strong>FilePerm</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#FilePerm">FilePerm</a>(x)<br>
+&nbsp;<br>
+<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="FilePerm-__init__"><strong>__init__</strong></a>(self, x)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>grp</strong></dt>
+<dd><tt>:&nbsp;permission&nbsp;for&nbsp;group<br>
+@getter&nbsp;FilePermBits<br>
+@setter&nbsp;accept&nbsp;int|str|FilePermBits</tt></dd>
+</dl>
+<dl><dt><strong>oth</strong></dt>
+<dd><tt>:&nbsp;permission&nbsp;for&nbsp;others<br>
+@getter&nbsp;FilePermBits<br>
+@setter&nbsp;accept&nbsp;int|str|FilePermBits</tt></dd>
+</dl>
+<dl><dt><strong>own</strong></dt>
+<dd><tt>:&nbsp;permission&nbsp;for&nbsp;owner<br>
+@getter&nbsp;FilePermBits<br>
+@setter&nbsp;accept&nbsp;int|str|FilePermBits</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="FilePermBits">class <strong>FilePermBits</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#FilePermBits">FilePermBits</a>(x)<br>
+&nbsp;<br>
+<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%">Methods defined here:<br>
+<dl><dt><a name="FilePermBits-__init__"><strong>__init__</strong></a>(self, x)</dt><dd><tt>@param&nbsp;x&nbsp;str|int</tt></dd></dl>
+
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>i</strong></dt>
+<dd><tt>@getter&nbsp;return&nbsp;value,&nbsp;as&nbsp;an&nbsp;integer<br>
+@setter&nbsp;set&nbsp;value,&nbsp;accept&nbsp;an&nbsp;integer</tt></dd>
+</dl>
+<dl><dt><strong>r</strong></dt>
+<dd><tt>@getter&nbsp;@setter&nbsp;<br>
+:&nbsp;readable&nbsp;or&nbsp;not</tt></dd>
+</dl>
+<dl><dt><strong>s</strong></dt>
+<dd><tt>@getter&nbsp;return&nbsp;value&nbsp;as&nbsp;a&nbsp;string&nbsp;like&nbsp;'rwx'<br>
+@setter&nbsp;accept&nbsp;a&nbsp;string&nbsp;like&nbsp;'rwx'</tt></dd>
+</dl>
+<dl><dt><strong>w</strong></dt>
+<dd><tt>@getter&nbsp;@setter<br>
+:&nbsp;writable&nbsp;or&nbsp;not</tt></dd>
+</dl>
+<dl><dt><strong>x</strong></dt>
+<dd><tt>@getter&nbsp;@setter<br>
+:&nbsp;executable&nbsp;or&nbsp;not</tt></dd>
+</dl>
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">

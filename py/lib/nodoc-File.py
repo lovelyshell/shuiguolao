@@ -12,6 +12,7 @@ from pathlib import Path
 import shutil
 
 from utils import *
+from User import *
 
 
 
@@ -132,6 +133,186 @@ except Exception as e:
     else:
         pass
         
+class FilePermBits():
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    def __init__(self, x):
+        '''@param x str|int
+        '''
+        if type(x) == str:
+            s = x
+            i = FilePermBits.s2i(s)
+        elif type(x) == int:
+            i = x
+            s = FilePermBits.i2s(i)
+        else:
+            raise TypeError(f"need str or int, got {str(type(x))}, {str(x)}")
+        self._i = i
+        self._s = s
+
+    @property
+    def s(self):
+        '''
+        @getter return value as a string like 'rwx'
+        @setter accept a string like 'rwx' 
+        '''
+        return self._s
+    @s.setter
+    def s(self, _s):
+        self._s = _s
+        self._i = FilePermBits.s2i(_s)
+
+    @property
+    def i(self):
+        '''
+        @getter return value, as an integer
+        @setter set value, accept an integer
+        '''
+        return self._i
+    @i.setter
+    def i(self, _i):
+        self._i = _i
+        self._s = FilePermBits.i2s(_i, '-')
+
+    @property 
+    def r(self):
+        '''
+        @getter @setter 
+        : readable or not
+        '''
+        return self.i & 4
+    @r.setter
+    def r(self, yes):
+        if yes:
+            i = self.i | 4
+        else:
+            i = self.i & (~4)
+        self.i = i
+
+    @property
+    def w(self):
+        '''
+        @getter @setter
+        : writable or not
+        '''
+        return self.i & 2
+    @w.setter
+    def w(self, yes):
+        self.i = (self.i|2) if yes else (self.i&(~2))
+
+    @property
+    def x(self):
+        '''
+        @getter @setter
+        : executable or not
+        '''
+        return self.i & 1
+    @x.setter
+    def x(self, yes):
+        self.i = (self.i|1) if yes else (self.i&(~1))
+
+
+
+
+
+class FilePerm():
+    def __init__(self, x):
+        if type(x) == int:
+            other = FilePermBits(x&0b111)
+            group = FilePermBits((x>>3)&0b111)
+            owner = FilePermBits((x>>6)&0b111)
+        else:
+            raise TypeError("allow type 'int', got {str(type(x))}")
+        self.x3=[other, group, owner]
+
+    @property
+    def own(self):
+        '''
+        : permission for owner
+        @getter FilePermBits
+        @setter accept int|str|FilePermBits
+        '''
+        return self.x3[2]
+    @own.setter
+    def own(self, x):
+        self.x3[2] = x if type(x) == FilePermBits else FilePermBits(x)
+
+    @property
+    def grp(self):
+        '''
+        : permission for group
+        @getter FilePermBits
+        @setter accept int|str|FilePermBits
+        '''
+        return self.x3[1]
+    @grp.setter
+    def grp(self, x):
+        self.x3[1] = x if type(x) == FilePermBits else FilePermBits(x)
+    
+    @property
+    def oth(self):
+        '''
+        : permission for others
+        @getter FilePermBits
+        @setter accept int|str|FilePermBits
+        '''
+        return self.x3[0]
+    @oth.setter
+    def oth(self, x):
+        self.x3[0] = x if type(x) == FilePermBits else FilePermBits(x)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 class File():
     TYPE_DIR = 'directory'
@@ -209,6 +390,21 @@ class File():
 
 
 
+
+    @property
+    def perm(self):
+        m = stat.S_IMODE(self.mode)
+        return FilePerm(m)
+
+    def set_perm(self, x):
+        if type(x) == int: 
+            fp = FilePerm(x)
+        elif type(x) == FilePerm:
+            fp = x
+        else:
+            raise TypeError(f"expect int|FilePerm, got {str(type(x))}")
+        self.drop_stat()
+        self.chmod(fp.i) 
 
     @property
     def text(self):
@@ -503,6 +699,15 @@ class File():
 
 
 
+
+
+
+
+
+
+
+
+
     @property
     def type(self):
         ''': str
@@ -535,6 +740,10 @@ class File():
     #类型: list(File) File对象数组，只能对目录类型的File访问
 
     @property
+    def owner(self):
+        return User(name=None, uid=self.uid)
+
+    @property
     def files(self):
         '''alias of "children"
         '''
@@ -547,11 +756,11 @@ class File():
         : An array of all File objects under the directory, equivalent to this.dict.values().
         : Available when isDir().
         '''
-        return self.dict.values()
+        return list(self.dict.values())
 
 
     @property
-    def list(self):
+    def keys(self):
         ''': List[str]
         : An array of all file names under the directory, equivalent to this.dict.keys()
         : Available when isDir()
@@ -704,6 +913,9 @@ class File():
 
 
 
+
+
+
     
 
 
@@ -757,8 +969,6 @@ class File():
 
 
                     
-
-
 
 
 

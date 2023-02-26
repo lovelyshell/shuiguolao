@@ -29,9 +29,30 @@
 <td colspan="3" valign="bottom">&#160;<br/>
 <font color="#000000" face="helvetica, arial"><a name="User">class <strong>User</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
-<tr><td bgcolor="#ffc8d8"><tt>&#160;&#160;&#160;</tt></td><td>&#160;</td>
+<tr bgcolor="#ffc8d8"><td rowspan="2"><tt>&#160;&#160;&#160;</tt></td>
+<td colspan="2"><tt><a href="#User">User</a>(name,&#160;**kw)<br/>
+&#160;<br/>
+<br/>&#160;</tt></td></tr>
+<tr><td>&#160;</td>
 <td width="100%">Methods defined here:<br/>
-<dl><dt><a name="User-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialize&#160;self.&#160;&#160;See&#160;help(type(self))&#160;for&#160;accurate&#160;signature.</tt></dd></dl>
+<dl><dt><a name="User-__init__"><strong>__init__</strong></a>(self, name, **kw)</dt><dd><tt>Initialize&#160;self.&#160;&#160;See&#160;help(type(self))&#160;for&#160;accurate&#160;signature.</tt></dd></dl>
+
+<dl><dt><a name="User-exists"><strong>exists</strong></a>(self)</dt><dd><tt>:&#160;If&#160;this&#160;user&#160;exists.</tt></dd></dl>
+
+<dl><dt><a name="User-join"><strong>join</strong></a>(self, g)</dt><dd><tt>:&#160;Join&#160;in&#160;group&#160;'g',&#160;and&#160;the&#160;latter&#160;will&#160;become&#160;a&#160;so-called&#160;secondary&#160;<br/>
+:&#160;or&#160;supplementary&#160;group&#160;for&#160;this&#160;user.<br/>
+@param&#160;g&#160;<a href="#UserGroup">UserGroup</a></tt></dd></dl>
+
+<dl><dt><a name="User-quit"><strong>quit</strong></a>(self, g)</dt><dd><tt>:&#160;Quit&#160;from&#160;group&#160;'g'&#160;which&#160;is&#160;so-called&#160;a&#160;secondary&#160;or&#160;supplementary<br/>
+:&#160;group&#160;for&#160;this&#160;user.<br/>
+@param&#160;g&#160;<a href="#UserGroup">UserGroup</a></tt></dd></dl>
+
+<dl><dt><a name="User-save"><strong>save</strong></a>(self)</dt><dd><tt>Save&#160;a&#160;new&#160;constructed&#160;user&#160;to&#160;database.</tt></dd></dl>
+
+<hr/>
+Static methods defined here:<br/>
+<dl><dt><a name="User-setters"><strong>setters</strong></a>(on=None)</dt><dd><tt>:&#160;Turn&#160;on/off&#160;setters.&#160;Off&#160;when&#160;class&#160;<a href="#User">User</a>&#160;initialized.<br/>
+:&#160;When&#160;@on&#160;None,&#160;do&#160;nothing&#160;but&#160;return&#160;all&#160;setters&#160;avaliable.</tt></dd></dl>
 
 <hr/>
 Data descriptors defined here:<br/>
@@ -42,32 +63,61 @@ Data descriptors defined here:<br/>
 <dd><tt>list&#160;of&#160;weak&#160;references&#160;to&#160;the&#160;object&#160;(if&#160;defined)</tt></dd>
 </dl>
 <dl><dt><strong>gid</strong></dt>
+<dd><tt>@getter&#160;int<br/>
+@setter&#160;Accept&#160;a&#160;gid&#160;and&#160;set&#160;user's&#160;primary&#160;group</tt></dd>
 </dl>
 <dl><dt><strong>group</strong></dt>
+<dd><tt>@getter&#160;Return&#160;the&#160;primary&#160;group&#160;of&#160;this&#160;user.&#160;Their&#160;relationship&#160;is&#160;built&#160;on&#160;gid.<br/>
+@setter&#160;Accept&#160;a&#160;UserGroup&#160;object&#160;and&#160;set&#160;user's&#160;primary&#160;group.</tt></dd>
 </dl>
 <dl><dt><strong>home</strong></dt>
+<dd><tt>:&#160;str</tt></dd>
 </dl>
 <dl><dt><strong>passwd</strong></dt>
+<dd><tt>:&#160;This&#160;field&#160;was&#160;abandoned&#160;by&#160;linux.</tt></dd>
 </dl>
 <dl><dt><strong>secondary_groups</strong></dt>
+<dd><tt>:&#160;List&lt;UserGroup&gt;<br/>
+:&#160;Collect&#160;all&#160;groups&#160;containing&#160;this&#160;user,&#160;return&#160;as&#160;a&#160;list.<br/>
+:&#160;Such&#160;group&#160;is&#160;called&#160;secondary&#160;or&#160;supplementary&#160;group&#160;on&#160;linux.</tt></dd>
 </dl>
 <dl><dt><strong>shell</strong></dt>
+<dd><tt>:&#160;str</tt></dd>
 </dl>
+<dl><dt><strong>uid</strong></dt>
+<dd><tt>:&#160;int</tt></dd>
+</dl>
+<hr/>
+Data and other attributes defined here:<br/>
+<dl><dt><strong>has_setters</strong> = ['uid', 'group']</dt></dl>
+
+<dl><dt><strong>use_setters</strong> = False</dt></dl>
+
 </td></tr></table> <p>
 </p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan="3" valign="bottom">&#160;<br/>
 <font color="#000000" face="helvetica, arial"><a name="UserGroup">class <strong>UserGroup</strong></a>(<a href="builtins.html#object">builtins.object</a>)</font></td></tr>
     
-<tr><td bgcolor="#ffc8d8"><tt>&#160;&#160;&#160;</tt></td><td>&#160;</td>
+<tr bgcolor="#ffc8d8"><td rowspan="2"><tt>&#160;&#160;&#160;</tt></td>
+<td colspan="2"><tt><a href="#UserGroup">UserGroup</a>(name,&#160;**kw)<br/>
+&#160;<br/>
+<br/>&#160;</tt></td></tr>
+<tr><td>&#160;</td>
 <td width="100%">Methods defined here:<br/>
-<dl><dt><a name="UserGroup-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialize&#160;self.&#160;&#160;See&#160;help(type(self))&#160;for&#160;accurate&#160;signature.</tt></dd></dl>
+<dl><dt><a name="UserGroup-__init__"><strong>__init__</strong></a>(self, name, **kw)</dt><dd><tt>Initialize&#160;self.&#160;&#160;See&#160;help(type(self))&#160;for&#160;accurate&#160;signature.</tt></dd></dl>
 
-<dl><dt><a name="UserGroup-add"><strong>add</strong></a>(self, u)</dt></dl>
+<dl><dt><a name="UserGroup-add"><strong>add</strong></a>(self, u)</dt><dd><tt>:&#160;Equalivant&#160;to&#160;u.join(self)<br/>
+@param&#160;u&#160;<a href="#User">User</a>|str|int<br/>
+&#160;can&#160;be&#160;a&#160;<a href="#User">User</a>&#160;<a href="builtins.html#object">object</a>,&#160;user&#160;name,&#160;or&#160;uid</tt></dd></dl>
 
-<dl><dt><a name="UserGroup-drop_cache"><strong>drop_cache</strong></a>(self)</dt></dl>
+<dl><dt><a name="UserGroup-exists"><strong>exists</strong></a>(self)</dt><dd><tt>:&#160;If&#160;this&#160;usergroup&#160;exists</tt></dd></dl>
 
-<dl><dt><a name="UserGroup-remove"><strong>remove</strong></a>(self, u)</dt></dl>
+<dl><dt><a name="UserGroup-remove"><strong>remove</strong></a>(self, u)</dt><dd><tt>:&#160;Equalivant&#160;to&#160;u.quit(self)<br/>
+@param&#160;u&#160;<a href="#User">User</a>|str|int<br/>
+&#160;can&#160;be&#160;a&#160;<a href="#User">User</a>&#160;<a href="builtins.html#object">object</a>,&#160;user&#160;name,&#160;or&#160;uid</tt></dd></dl>
+
+<dl><dt><a name="UserGroup-save"><strong>save</strong></a>(self)</dt><dd><tt>Save&#160;a&#160;new&#160;constructed&#160;user&#160;to&#160;database.</tt></dd></dl>
 
 <hr/>
 Data descriptors defined here:<br/>
@@ -77,11 +127,17 @@ Data descriptors defined here:<br/>
 <dl><dt><strong>__weakref__</strong></dt>
 <dd><tt>list&#160;of&#160;weak&#160;references&#160;to&#160;the&#160;object&#160;(if&#160;defined)</tt></dd>
 </dl>
+<dl><dt><strong>gid</strong></dt>
+<dd><tt>:&#160;int</tt></dd>
+</dl>
 <dl><dt><strong>members</strong></dt>
+<dd><tt>:&#160;list&lt;str&gt;</tt></dd>
 </dl>
 <dl><dt><strong>passwd</strong></dt>
+<dd><tt>:&#160;this&#160;field&#160;has&#160;been&#160;abandoned&#160;by&#160;linux</tt></dd>
 </dl>
 <dl><dt><strong>users</strong></dt>
+<dd><tt>:&#160;Return&#160;a&#160;list&#160;of&#160;users&#160;that&#160;join()&#160;this&#160;usergroup.</tt></dd>
 </dl>
 </td></tr></table> <p>
 </p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
@@ -93,12 +149,17 @@ Data descriptors defined here:<br/>
 <td width="100%">Methods defined here:<br/>
 <dl><dt><a name="UserGroupTable-__init__"><strong>__init__</strong></a>(self)</dt><dd><tt>Initialize&#160;self.&#160;&#160;See&#160;help(type(self))&#160;for&#160;accurate&#160;signature.</tt></dd></dl>
 
-<dl><dt><a name="UserGroupTable-add"><strong>add</strong></a>(self, gname, **kw)</dt><dd><tt>if&#160;self.<a href="#UserGroupTable-get">get</a>(name):<br/>
-self.<strong>groups</strong>.<a href="#UserGroupTable-add">add</a>()</tt></dd></dl>
+<dl><dt><a name="UserGroupTable-add"><strong>add</strong></a>(self, name, **kw)</dt><dd><tt>:&#160;Create&#160;a&#160;new&#160;usergroup&#160;named&#160;@name.<br/>
+@param&#160;name&#160;str<br/>
+@return&#160;<a href="#UserGroup">UserGroup</a></tt></dd></dl>
 
-<dl><dt><a name="UserGroupTable-get"><strong>get</strong></a>(self, g)</dt></dl>
+<dl><dt><a name="UserGroupTable-get"><strong>get</strong></a>(self, g)</dt><dd><tt>:&#160;Find&#160;a&#160;usergroup&#160;by&#160;gid&#160;or&#160;group&#160;name.<br/>
+@param&#160;g&#160;int|str<br/>
+@return&#160;<a href="#UserGroup">UserGroup</a>|None</tt></dd></dl>
 
-<dl><dt><a name="UserGroupTable-remove"><strong>remove</strong></a>(self, g)</dt></dl>
+<dl><dt><a name="UserGroupTable-remove"><strong>remove</strong></a>(self, g)</dt><dd><tt>:&#160;Remove&#160;a&#160;usergroup.<br/>
+@param&#160;g&#160;<a href="#UserGroup">UserGroup</a>|str<br/>
+&#160;can&#160;be&#160;an&#160;<a href="#UserGroup">UserGroup</a>&#160;<a href="builtins.html#object">object</a>&#160;or&#160;group&#160;name.</tt></dd></dl>
 
 <hr/>
 Data descriptors defined here:<br/>
@@ -109,6 +170,8 @@ Data descriptors defined here:<br/>
 <dd><tt>list&#160;of&#160;weak&#160;references&#160;to&#160;the&#160;object&#160;(if&#160;defined)</tt></dd>
 </dl>
 <dl><dt><strong>list</strong></dt>
+<dd><tt>:&#160;List&lt;UserGroup&gt;<br/>
+@getter&#160;all&#160;usergroups&#160;on&#160;this&#160;computer.</tt></dd>
 </dl>
 </td></tr></table> <p>
 </p><table width="100%" cellspacing="0" cellpadding="2" border="0" summary="section">
@@ -118,11 +181,17 @@ Data descriptors defined here:<br/>
     
 <tr><td bgcolor="#ffc8d8"><tt>&#160;&#160;&#160;</tt></td><td>&#160;</td>
 <td width="100%">Methods defined here:<br/>
-<dl><dt><a name="UserTable-add"><strong>add</strong></a>(self, name, **kw)</dt></dl>
+<dl><dt><a name="UserTable-add"><strong>add</strong></a>(self, name, **kw)</dt><dd><tt>:&#160;Create&#160;a&#160;new&#160;user&#160;named&#160;@name.<br/>
+@param&#160;name&#160;str<br/>
+@return&#160;<a href="#User">User</a></tt></dd></dl>
 
-<dl><dt><a name="UserTable-get"><strong>get</strong></a>(self, u)</dt></dl>
+<dl><dt><a name="UserTable-get"><strong>get</strong></a>(self, u)</dt><dd><tt>:&#160;Find&#160;a&#160;user&#160;by&#160;uid&#160;or&#160;user&#160;name.<br/>
+@param&#160;u&#160;int|str<br/>
+@return&#160;<a href="#User">User</a>|None</tt></dd></dl>
 
-<dl><dt><a name="UserTable-remove"><strong>remove</strong></a>(self, u, **kw)</dt></dl>
+<dl><dt><a name="UserTable-remove"><strong>remove</strong></a>(self, u, **kw)</dt><dd><tt>:&#160;Remove&#160;a&#160;user.<br/>
+@param&#160;u&#160;<a href="#User">User</a>|str<br/>
+&#160;can&#160;be&#160;an&#160;<a href="#User">User</a>&#160;<a href="builtins.html#object">object</a>&#160;or&#160;user&#160;name.</tt></dd></dl>
 
 <hr/>
 Data descriptors defined here:<br/>
@@ -133,6 +202,8 @@ Data descriptors defined here:<br/>
 <dd><tt>list&#160;of&#160;weak&#160;references&#160;to&#160;the&#160;object&#160;(if&#160;defined)</tt></dd>
 </dl>
 <dl><dt><strong>list</strong></dt>
+<dd><tt>:&#160;List&lt;User&gt;<br/>
+@getter&#160;all&#160;users&#160;on&#160;this&#160;computer.</tt></dd>
 </dl>
 </td></tr></table></td></tr></table>
 </body>

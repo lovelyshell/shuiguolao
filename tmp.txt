@@ -1,0 +1,88 @@
+
+水果捞目前只是一个玩具，但一个典型的使用场景是，当你在命令行遇到麻烦，输入shuiguolao，
+1. The typical scene you use shuiguolao is when you get trouble in command line 
+
+
+想象这样一个shell，按ctrl-x，后台的解释器由bash切换成python或nodejs，此时进入程序模式。在这个模式下有一些新事物值得遐想，例如我们用find函数而非命令来搜索一个文件,输入find(会自动弹出参数提示，命令行当然也有提示插件，但函数式的声明天然就能有更好的逻辑展示和防呆设计。
+
+shuiguolao可以看作对这样的一个未来shell的演练。
+
+水果捞包含两个部分:一个vim+bash脚本，用来提供一个开箱即用的脚本书写和运行环境;一个脚本库，用来替代传统的unix命令，提供用程序语言解决shell级别任务的API。
+
+
+Usage
+f = x.target
+p = f.perm
+p.oth.w = False
+f.setters(1)
+f.perm = p
+f.setters(0)
+
+Use the library in xonsh
+import sys
+sys.path.append('WHERE/shuiguolao/py/lib/') 
+from preload import *
+
+它主要构建一套库，来支持shell级别的编程。日常的shell的任务通常都是小的，临时的，要求书写快速的，性能不相干的。现有的主流脚本语言的库在这个场合
+
+这套库之于主流脚本，想当于unix命令之于bash脚本.
+
+
+
+要新建文件，要给文件命名，选择放在哪个目录，写shebang，import基本的库，最后还要chmod 777.A解决的是这个问题，开箱即用的编程环境是通过调用vim来实现的,通过注入shuiguolao.vimrc，确保你命令行输入shuiguolao之后，能跳过以上繁琐的步骤，直接开始脚本语言的书写，这其中包含历史文件的管理。
+B尝试解决的问题，是使通用用脚本语言替代shell语言，紧接着会遇到的问题。
+
+常规脚本语言处理shell级别的任务，面临的问题是，
+
+shuiguolao尝试提出一套用脚本语言解决shell级别问题的方案，可能它最后的形态会是一个shell。
+开始编程后，紧接着要面临的问题
+
+研究的是通用语言替代shell编程的一系列问题，
+
+2. 所以shuiguolao典型的使用场景是，当在命令行遇到麻烦，输入shuiguolao，进入一个配置好的代码书写环境，你可以使用你熟悉的语言来解决问题，完成后按:q退回到命令行模式。
+3. 通用脚本替代shell语言作为胶水后，紧接着面临的的问题是，通用脚本的库并不是为支持shell级别的编程而设计的，shell级别的编程任务通常是一些小的，临时的，性能不相干的, 相较性能和精细度，我们更注重易用性和清晰度。
+4. 有了这个入口，也许我们能在改变linux的生态上有所作为。
+
+而使用者又急急忙忙。在python里读入一个文件至少需要with open和read，加之其中的参数，此种细节不一而足都是心智负担。我们需要一些更高级的抽象来帮助我们快速的书写代码。这个抽象主要是数据结构的建立，通过把我们常见的操作对象的底层模型，反应到脚本代码的数据结构上。所以shuiguolao面向的用户是程序员，而不像bash面对更广泛的用户。
+
+2. 脚本编程替代命令行存在一个
+所以这套程序解决的第一个问题是，降低从命令行切换到脚本编程的门槛。因为它意味着
+脚本编程替代命令行的第一个问题，是需要新建文件()
+shell编程面临的两个问题，一个是门槛问题，当我们要解决的任务不大不小，使用脚本
+所以shuiguolao由两部分构成，这两部分分别解决脚本编程
+主要由两部分构成，一部分是
+
+shuiguolao提供一个开箱即用的脚本编程环境，来支持你在命令行遇到麻烦时，能快速的切换到自己喜欢的语言来解决问题。
+当你在命令行遇到麻烦时，可以输入shuiguolao
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
+
+### Prerequisites
+
+* python 3.6+
+* vim 
+
+### Installation
+
+Download and unzip(or git clone) this repo to `WHERE` you like, then run command:
+   ```sh
+   sudo chmod 777 WHERE/shuiguolao/shuiguolao
+   sudo ln -s WHERE/shuiguolao/shuiguolao.bash /usr/bin/shuiguolao
+   ```
+
+shuiguolao need 
+
+<!-- USAGE EXAMPLES -->
+## Usage
+
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+

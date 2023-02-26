@@ -117,6 +117,7 @@ SGL_VIMRC_PATH=$SGL_DIR/shuiguolao.vimrc
 #注意,lib目录只能放在最后面，否则会出奇怪错误?
 VM_PATH=$SGL_VM/lib:$SGL_VM/history
 
+export SGL_ROOT=$SGL_DIR
 if [[ $VM == 'py' ]]
 then
 	#BIN=${config[py_BIN]}

@@ -28,18 +28,32 @@ from error import *
 #groupadd groupdel groupmod
 
 class User():
+    has_setters = ['uid', 'group']
+    use_setters = False
+    ##NODOC
+    def Copy(A, B):
+        B.name = A.name
+        B.kw = a.kw
+        B._entry = A._entry
+            
     #user shouldn't construct one by hand ?
     def __init__(self, name, **kw):
-        self.name =name
+        self._name = name
         self.kw = kw
         self._entry = None
 
+    @property
+    def name(self):
+        if not self._name:
+            self._name = self.entry.pw_name
+        return self._name
+
     def save(self):
+        '''
+        Save a new constructed user to database.
+        '''
         kw = self.kw
         name = self.name
-        '''
-        currently we only allow saved to an unexisted user
-        '''
         passwd = kw['passwd'] if 'passwd' in kw else None
         home = kw['home'] if 'home' in kw else ('/home/'+name)
         shell = kw['shell'] if 'shell' in kw else '/bin/sh'
@@ -64,6 +78,9 @@ class User():
         self.drop_cache()
 
     def exists(self):
+        '''
+        : If this user exists.
+        '''
         try:
             abc = self.entry
         except :
@@ -78,47 +95,92 @@ class User():
     @property
     def entry(self):
         if not self._entry:
-            if self.name:
-                self._entry = pwd.getpwnam(self.name)
+            if self._name:
+                self._entry = pwd.getpwnam(self._name)
             elif 'uid' in self.kw:
                 self._entry = pwd.getpwuid(self.kw['uid'])
-                self.name = self._entry.pw_name
             else:
                 raise Exception("strange, neither 'name' nor 'uid' supplied for this User!")
         return self._entry
 
     @property
     def uid(self):
+        ''': int
+        '''
         return self.entry.pw_uid
     @property
     def gid(self):
+        '''
+        @getter int
+        @setter Accept a gid and set user's primary group
+        '''
         return self.entry.pw_gid
     @property
     def passwd(self):
+        ''': This field was abandoned by linux.
+        '''
         return self.entry.pw_passwd
     @property
     def shell(self):
+        ''': str
+        '''
         return self.entry.pw_shell
     @property
     def home(self):
+        ''': str
+        '''
         return self.entry.pw_dir
 
     ##NODOC
     def __repr__(self):
-        return f'User: {self.name} {self.uid} {self.home} {self.shell} {self.passwd}'
+        self.entry
+        return f"<User object: {self.name} {self.uid} {self.home} {self.shell} >"
 
     @property
     def group(self):
+        '''
+        @getter Return the primary group of this user. Their relationship is built on gid.
+        @setter Accept a UserGroup object and set user's primary group.
+        '''
         return os.usergroups.get(self.gid)
+
+    @staticmethod
+    def setters(on=None):
+        '''
+        : Turn on/off setters. Off when class User initialized.
+        : When @on None, do nothing but return all setters avaliable.
+        '''
+        if on == None:
+            return User.has_setters
+        elif on:
+            User.use_setters = True
+        else:
+            User.use_setters = False
+            
+    ##NODOC
+    def setg(self, g):
+        assert User.use_setters, "please call 'User.setters(1)' to use setters'"
+        param_type_check(g, [str, int])
+        sh_command(['sudo', 'usermod', '-g', g, self.name]) 
+        self.drop_cache()
 
     @group.setter
     def group(self, g):
         param_type_check(g, [UserGroup])
-        sh_command(['sudo', 'usermod', '-g', g.name, self.name]) 
-        self.drop_cache()
+        self.setg(g.name)
+
+    @gid.setter
+    def gid(self, g):
+        param_type_check(g, [int])
+        self.setg(g)
 
     @property
     def secondary_groups(self):
+        '''
+        : List<UserGroup>
+        : Collect all groups containing this user, return as a list.
+        : Such group is called secondary or supplementary group on linux.
+        '''
         lst = []
         for g in os.usergroups.list:
             if self.name in g.members:
@@ -127,6 +189,12 @@ class User():
 
     @secondary_groups.setter
     def secondary_groups(self, lst):
+        '''
+        : Set secondary groups for a user.
+        : Equalivant to usermod -G [lst]
+        @param lst List
+         the list element can be str or User object, or mixed.
+        '''
         G = []
         for g in lst:
             param_type_check(g, [str,  User])
@@ -135,6 +203,23 @@ class User():
         G = ','.join(G)
         sh_command(['usermod', '-G', G])
 
+    def join(self, g):
+        '''
+        : Join in group 'g', and the latter will become a so-called secondary 
+        : or supplementary group for this user.
+        @param g UserGroup
+        '''
+        return g.add(self)
+
+    def quit(self, g):
+        '''
+        : Quit from group 'g' which is so-called a secondary or supplementary
+        : group for this user.
+        @param g UserGroup
+        '''
+        return g.remove(self) 
+
+
 class UserGroup():
     def __init__(self, name, **kw):
         self.kw = kw
@@ -142,6 +227,9 @@ class UserGroup():
         self._entry = None
 
     def exists(self):
+        '''
+        : If this usergroup exists
+        '''
         try:
             abc = self.entry
         except:
@@ -149,6 +237,9 @@ class UserGroup():
         return True
 
     def save(self):
+        '''
+        Save a new constructed user to database.
+        '''
         code = sh_command(['sudo', 'groupadd', self.name])
         if code != 0:
             raise Exception(f"Create usergroup '{gname}' failed!")
@@ -166,23 +257,36 @@ class UserGroup():
                 raise Exception("strange, neither 'name' nor 'uid' supplied for this User!")
         return self._entry
 
+    ##NODOC
     def drop_cache(self):
         self._entry = None
 
     @property
     def gid(self):
+        '''
+        : int
+        '''
         return self.entry.gr_gid
 
     @property
     def members(self):
+        '''
+        : list<str>
+        '''
         return self.entry.gr_mem
 
     @property
     def passwd(self):
+        '''
+        : this field has been abandoned by linux
+        '''
         return self.entry.gr_passwd
 
     @property
     def users(self):
+        '''
+        : Return a list of users that join() this usergroup.
+        '''
         lst = []
         for u in self.members:
             user = os.users.get(u)
@@ -190,6 +294,11 @@ class UserGroup():
         return lst
 
     def remove(self, u):
+        '''
+        : Equalivant to u.quit(self)
+        @param u User|str|int
+         can be a User object, user name, or uid
+        '''
         param_type_check(u, [int, str, User])
         if type(u) == int:
             uname = os.users.get(u)
@@ -200,14 +309,21 @@ class UserGroup():
         else:
             assert False
 
+        '''
         members = self.members
         members.remove(uname)
-        G_s = ','.join(self.members)
-        code = sh_command(['sudo', 'usermod', uname, '-G', G_s])
+        G_s = ','.join(members)
+        '''
+        code = sh_command(['sudo', 'gpasswd', '-d', uname, self.name])
         self.drop_cache()
         return True if code == 0 else False
             
     def add(self, u):
+        '''
+        : Equalivant to u.join(self)
+        @param u User|str|int
+         can be a User object, user name, or uid
+        '''
         param_type_check(u, [int, str, User])
         if type(u) == int:
             uname = os.users.get(u)
@@ -219,9 +335,11 @@ class UserGroup():
             assert False
 
         #必须是-aG,不能是-Ga
-        code = sh_command(['sudo', 'usermod', uname, '-aG', self.name])    
+        #this line works, but comment to use another command gpass
+        #code = sh_command(['sudo', 'usermod', uname, '-aG', self.name])    
+        code = sh_command(['sudo', 'gpasswd', '-a', uname, self.name])    
         self.drop_cache()
-        return os.users.get(uname)
+        return True if code == 0 else False
 
     ##NODOC
     def __repr__(self):
@@ -235,6 +353,10 @@ class UserGroupTable():
 
     @property 
     def list(self):
+        '''
+        : List<UserGroup>
+        @getter all usergroups on this computer.
+        '''
         arr = grp.getgrall()
         lst = []
         for el in arr:
@@ -243,6 +365,11 @@ class UserGroupTable():
         return lst
 
     def get(self, g):
+        '''
+        : Find a usergroup by gid or group name.
+        @param g int|str
+        @return UserGroup|None
+        '''
         param_type_check(g, [int, str])
         if type(g) == int:
             group = UserGroup(None, gid=g)
@@ -253,6 +380,11 @@ class UserGroupTable():
         return group if group.exists() else None
 
     def add(self, name, **kw):
+        '''
+        : Create a new usergroup named @name.
+        @param name str
+        @return UserGroup
+        '''
         g = UserGroup(name, **kw)
         if g.exists():
             if 'exists_ok' in kw and kw['exists_ok']:
@@ -265,6 +397,11 @@ class UserGroupTable():
         return g
 
     def remove(self, g):
+        '''
+        : Remove a usergroup.
+        @param g UserGroup|str
+         can be an UserGroup object or group name.
+        '''
         param_type_check(g, [UserGroup, str])
         gname = g.name if type(g) == UserGroup else g
         code = sh_command(['sudo', 'groupdel', gname])
@@ -273,6 +410,10 @@ class UserGroupTable():
 class UserTable():
     @property
     def list(self):
+        '''
+        : List<User>
+        @getter all users on this computer.
+        '''
         arr=pwd.getpwall()
         users = []
         for el in arr:
@@ -281,6 +422,11 @@ class UserTable():
         return users
 
     def add(self, name, **kw):
+        '''
+        : Create a new user named @name.
+        @param name str
+        @return User
+        '''
         user = User(name, **kw)
         if user.exists():
             if 'exists_ok' in kw and kw['exists_ok']:
@@ -293,6 +439,11 @@ class UserTable():
         return user
         
     def remove(self, u, **kw):
+        '''
+        : Remove a user.
+        @param u User|str
+         can be an User object or user name.
+        '''
         param_type_check(u, [str, User])
         force = kw['force'] if 'force' in kw else False
         rmfs = kw['rmfs'] if 'rmfs' in kw else False
@@ -306,6 +457,11 @@ class UserTable():
         return None if code != 0 else True
 
     def get(self, u):
+        '''
+        : Find a user by uid or user name.
+        @param u int|str
+        @return User|None
+        '''
         param_type_check(u, [str,int])
         uname = None
         if type(u) == int:

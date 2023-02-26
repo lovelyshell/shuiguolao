@@ -12,6 +12,7 @@ from pathlib import Path
 import shutil
 
 from utils import *
+from User import *
 
 ##NODOC
 def rawset(it, key, value):
@@ -132,22 +133,197 @@ except Exception as e:
     else:
         pass
         
+class FilePermBits():
+    ##NODOC
+    @staticmethod
+    def s2i(s):
+        i = 0
+        for c in s:
+            if c == 'r':
+                i += 4
+            elif c == 'w':
+                i += 2
+            elif c == 'x':
+                i += 1
+            elif c == '-':
+                pass
+            else:
+                raise Exception(f"character {c} in {s} not accepted")
+        return i
 
+    ##NODOC
+    @staticmethod
+    def i2s(i, pad='-'):
+        if i < 0  or i >7:
+            raise Exception(f"parameter range error, got {i}, need [0-7]")
+        s=''
+        s += 'r' if (i&4) else pad
+        s += 'w' if (i&2) else pad
+        s += 'x' if (i&1) else pad
+        return s
+
+    def __init__(self, x):
+        '''@param x str|int
+        '''
+        if type(x) == str:
+            s = x
+            i = FilePermBits.s2i(s)
+        elif type(x) == int:
+            i = x
+            s = FilePermBits.i2s(i)
+        else:
+            raise TypeError(f"need str or int, got {str(type(x))}, {str(x)}")
+        self._i = i
+        self._s = s
+
+    @property
+    def s(self):
+        '''
+        @getter return value as a string like 'rwx'
+        @setter accept a string like 'rwx' 
+        '''
+        return self._s
+    @s.setter
+    def s(self, _s):
+        self._s = _s
+        self._i = FilePermBits.s2i(_s)
+
+    @property
+    def i(self):
+        '''
+        @getter return value, as an integer
+        @setter set value, accept an integer
+        '''
+        return self._i
+    @i.setter
+    def i(self, _i):
+        self._i = _i
+        self._s = FilePermBits.i2s(_i, '-')
+
+    @property 
+    def r(self):
+        '''
+        @getter @setter 
+        : readable or not
+        '''
+        return self.i & 4
+    @r.setter
+    def r(self, yes):
+        if yes:
+            i = self.i | 4
+        else:
+            i = self.i & (~4)
+        self.i = i
+
+    @property
+    def w(self):
+        '''
+        @getter @setter
+        : writable or not
+        '''
+        return self.i & 2
+    @w.setter
+    def w(self, yes):
+        self.i = (self.i|2) if yes else (self.i&(~2))
+
+    @property
+    def x(self):
+        '''
+        @getter @setter
+        : executable or not
+        '''
+        return self.i & 1
+    @x.setter
+    def x(self, yes):
+        self.i = (self.i|1) if yes else (self.i&(~1))
+
+    ##NODOC
+    def __repr__(self):
+        return self.s
+
+class FilePerm():
+    def __init__(self, x):
+        if type(x) == int:
+            other = FilePermBits(x&0b111)
+            group = FilePermBits((x>>3)&0b111)
+            owner = FilePermBits((x>>6)&0b111)
+        else:
+            raise TypeError("allow type 'int', got {str(type(x))}")
+        self.x3=[other, group, owner]
+
+    @property
+    def own(self):
+        '''
+        : permission for owner
+        @getter FilePermBits
+        @setter accept int|str|FilePermBits
+        '''
+        return self.x3[2]
+    @own.setter
+    def own(self, x):
+        self.x3[2] = x if type(x) == FilePermBits else FilePermBits(x)
+
+    @property
+    def grp(self):
+        '''
+        : permission for group
+        @getter FilePermBits
+        @setter accept int|str|FilePermBits
+        '''
+        return self.x3[1]
+    @grp.setter
+    def grp(self, x):
+        self.x3[1] = x if type(x) == FilePermBits else FilePermBits(x)
+    
+    @property
+    def oth(self):
+        '''
+        : permission for others
+        @getter FilePermBits
+        @setter accept int|str|FilePermBits
+        '''
+        return self.x3[0]
+    @oth.setter
+    def oth(self, x):
+        self.x3[0] = x if type(x) == FilePermBits else FilePermBits(x)
+
+    ##NODOC
+    @property
+    def s(self):
+        _s = ''
+        for x in self.x3:
+            _s = x.s + _s
+        return _s 
+
+    ##NODOC
+    @property
+    def i(self):
+        _i = 0
+        _i += self.x3[0].i
+        _i += (self.x3[1].i << 3)
+        _i += (self.x3[2].i << 6)
+        return _i
+
+    ##NODOC
+    def __str__(self):
+        s = self.s
+        i = self.i
+        return f"FilePerm object {i:08o} {s}"
+
+    ##NODOC
+    def __repr__(self):
+        return self.__str__()
+
+FTYPE_DIR = 'directory'    #directory
+FTYPE_CHR = 'char'   #character
+FTYPE_BLK = 'block'
+FTYPE_REG = 'file'
+FTYPE_FIFO = 'fifo'
+FTYPE_SOCK = 'sockect'
+FTYPE_PORT = 'port'
+FTYPE_WHT = 'whiteout'
+FTYPE_LINK = 'link'
 class File():
-    TYPE_DIR = 'directory'
-    TYPE_CHR = 'character'
-    TYPE_BLK = 'block'
-    TYPE_REG = 'file'
-    TYPE_FIFO = 'fifo'
-    TYPE_SOCK = 'sockect'
-    TYPE_PORT = 'port'
-    TYPE_WHT = 'whiteout'
-    TYPE_LINK = 'link'
-    '''
-    TypeNames = {TYPE_DIR:'directory', TYPE_CHR:'character', TYPE_BLK:'block',
-            TYPE_REG:'file', TYPE_FIFO:'fifo', TYPE_SOCK:'sockect', 
-            TYPE_PORT:'port', TYPE_WHT:'whiteout', TYPE_LINK:'link'}
-    '''
     '''
     stat_fields = ['ino', 'gid', 'uid', 'mode', 'size', 'atime', 'ctime','mtime', 'dev', 'nlink', 'atime_ns', 'mtime_ns', 'ctime_ns',
                     'blocks', 'blksize', 'rdev', 'flags', 
@@ -157,9 +333,7 @@ class File():
     #所有的标志都是你在限制自己的权限，防止自己误操作。
     #不需要读时不读，不需要写时不写，不需要触碰到已存在内容时不碰。
     #另一组是功能，在写时，如果不存在则创建，如果存在则截断
-    #这其实可以通过手动调用函数来实现
     #不考虑追加模式
-    #def __init__(self, path, rw='rw', w_ex='ac', w_pos='', mode=511):
     ##NODOC
     def __init__(self, path, rw='rw'):
         object.__setattr__(self, '__lock_dict__', 0)
@@ -209,6 +383,22 @@ class File():
     ##NODOC
     def drop_stat(self):
         self._stat = None
+
+    @property
+    def perm(self):
+        m = stat.S_IMODE(self.mode)
+        return FilePerm(m)
+
+    ##NODOC
+    def set_perm(self, x):
+        if type(x) == int: 
+            fp = FilePerm(x)
+        elif type(x) == FilePerm:
+            fp = x
+        else:
+            raise TypeError(f"expect int|FilePerm, got {str(type(x))}")
+        self.drop_stat()
+        self.chmod(fp.i) 
 
     @property
     def text(self):
@@ -440,10 +630,12 @@ class File():
         #if st_key in File.TypeNames.stat_fields:
         try:
             got = getattr(self.stat, st_key, None)
-            return got 
+            if got != None:
+                return got
         except:
-            _path = rawget(self, '_p').as_posix()
-            raise AttributeError(f"'{_path}', 'File' object has no attribute or getter named '{key}'")
+            pass
+        _path = rawget(self, '_p').as_posix()
+        raise AttributeError(f"'{_path}', 'File' object has no attribute or getter named '{key}'")
 
     ##NODOC
     def __setattr__(self, key, value):
@@ -451,9 +643,11 @@ class File():
         if rawget(self, '__is_destroy'):
             raise Exception(f'attemp to write on a destroyed File object, ({key}=>{value})')
         #print(f"attempt to set '{key}'-> {value}")
+        '''
         if key=='mode':
             self.chmod(value)
-        elif key == 'uid':
+        '''
+        if key == 'uid':
             self.chown(uid=value)
         elif key == 'gid':
             self.chown(gid=value)
@@ -465,6 +659,11 @@ class File():
             self.writetext(value)
         elif key == 'link':
             self.writelink(value)
+        elif key == 'perm':
+            self.set_perm(value)
+        elif key == 'owner':
+            uid = value.uid if type(value) == User else value
+            self.chown(uid=uid)
         #all setters checked, it should be an attribute?
         elif key in self.__dict__ or  not self.__lock_dict__:
             rawset(self, key, value)
@@ -479,25 +678,25 @@ class File():
             return None
         m = self.readStat().st_mode
         if stat.S_ISDIR(m):
-            t = File.TYPE_DIR
+            t = FTYPE_DIR
         elif stat.S_ISREG(m):
-            t = File.TYPE_REG
+            t = FTYPE_REG
         elif stat.S_ISCHR(m):
-            t = File.TYPE_CHR
+            t = FTYPE_CHR
         elif stat.S_ISBLK(m):
-            t = File.TYPE_BLK
+            t = FTYPE_BLK
         elif stat.S_ISFIFO(m):
-            t = File.TYPE_FIFO
+            t = FTYPE_FIFO
         elif stat.S_ISLNK(m):
-            t = File.TYPE_LINK
+            t = FTYPE_LINK
         elif stat.S_ISSOCK(m):
-            t = File.TYPE_SOCK
+            t = FTYPE_SOCK
         elif stat.S_ISDOOR(m):
-            t = File.TYPE_DOOR
+            t = FTYPE_DOOR
         elif stat.S_ISPORT(m):
-            t = File.TYPE_PORT
+            t = FTYPE_PORT
         elif stat.S_ISWHT(m):
-            t = File.TYPE_WHT
+            t = FTYPE_WHT
         else:
             assert False, 'unspecified file type when parsing'
         #return File.TypeNames[t]
@@ -535,8 +734,12 @@ class File():
     #类型: list(File) File对象数组，只能对目录类型的File访问
 
     @property
+    def owner(self):
+        return User(None, uid=self.uid)
+
+    @property
     def files(self):
-        '''alias of "children"
+        '''alias of "children()"
         '''
         return self.children
 
@@ -547,11 +750,21 @@ class File():
         : An array of all File objects under the directory, equivalent to this.dict.values().
         : Available when isDir().
         '''
-        return self.dict.values()
-
+        #print(kw)
+        l = list(self.dict.values())
+        '''
+        if 'types' in kw:
+            #print(l)
+            allow_types = kw['types']
+            #print(allow_types)
+            lst = list(filter(lambda f:f.type in allow_types, l))
+        else:
+            lst = l
+        '''
+        return l
 
     @property
-    def list(self):
+    def keys(self):
         ''': List[str]
         : An array of all file names under the directory, equivalent to this.dict.keys()
         : Available when isDir()
@@ -674,12 +887,14 @@ class File():
         
     ##NODOC
     def chmod(self, mode, follow_symlinks=False, impl_error_level=1):
-        print(f'you called chmod({mode})',)
+        #print(f'you called chmod({mode:08o})',)
         ok = self.follow_symlinks_impl_check(follow_symlinks, impl_error_level)
         if not ok:
             return
+        print(f"chmod {mode:08o} {self.path}")
         os.chmod(self.path, mode, follow_symlinks=True)
-        self._stat = None
+        self.drop_stat()
+        #self._stat = None
         '''
         if not follow_symlinks and not has_follow_symlinks_impl:
             if self.p.is_symlink():
@@ -702,7 +917,8 @@ class File():
     ##NODOC
     def chown(self, uid=-1, gid=-1, follow_symlinks=False):
         os.chown(self.path, uid=uid, gid=gid, follow_symlinks=follow_symlinks)
-        self._stat = None
+        self.drop_stat()
+        #self._stat = None
         #object.__setattr__(self, '_stat', None)
     
     ##NODOC
@@ -757,8 +973,6 @@ class SimpleTrash():
                 else:
                     raise e
                     
-##NODOC
-Trash = SimpleTrash('~/.shuiguolao-trash')
 
 
 
