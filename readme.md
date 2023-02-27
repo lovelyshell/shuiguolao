@@ -31,7 +31,7 @@ Type `shuiguolao` in command line, you will get a vim window to write script, pr
    shuiguolao -i
    ```
 
-3. specify the script language 
+3. Specify the script language:
 
    ```bash
    shuiguolao --python
@@ -39,7 +39,7 @@ Type `shuiguolao` in command line, you will get a vim window to write script, pr
    ```
 (currently only python,js supported)
 
-4. use its library in xonsh
+4. You can also use its library in xonsh:
 
    ```python
    import sys
@@ -56,6 +56,4 @@ Contributions are what make the open source community such an amazing place to l
 ## License
 
 Distributed under the GPL-v3 License. See `LICENSE` for more information.
-
-
 
